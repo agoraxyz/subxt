@@ -4,31 +4,15 @@
 
 use super::TxPayload;
 use crate::{
-    client::{
-        OfflineClientT,
-        OnlineClientT,
-    },
+    client::{OfflineClientT, OnlineClientT},
     error::Error,
-    tx::{
-        ExtrinsicParams,
-        Signer,
-        TxProgress,
-    },
-    utils::{
-        Encoded,
-        PhantomDataSendSync,
-    },
+    tx::{ExtrinsicParams, Signer, TxProgress},
+    utils::{Encoded, PhantomDataSendSync},
     Config,
 };
-use codec::{
-    Compact,
-    Encode,
-};
+use codec::{Compact, Encode};
 use derivative::Derivative;
-use sp_runtime::{
-    traits::Hash,
-    ApplyExtrinsicResult,
-};
+use sp_runtime::{traits::Hash, ApplyExtrinsicResult};
 
 /// A client for working with transactions.
 #[derive(Derivative)]
@@ -66,7 +50,7 @@ impl<T: Config, C: OfflineClientT<T>> TxClient<T, C> {
                     details.pallet_name.into(),
                     details.call_name.into(),
                 )
-                .into())
+                .into());
             }
         }
         Ok(())
@@ -114,6 +98,93 @@ impl<T: Config, C: OfflineClientT<T>> TxClient<T, C> {
         };
 
         // Wrap in Encoded to ensure that any more "encode" calls leave it in the right state.
+        Ok(SubmittableExtrinsic::from_bytes(
+            self.client.clone(),
+            extrinsic,
+        ))
+    }
+
+    /// Prepare call into a signable byte array.
+    pub fn prepare_call_to_msg<Call>(
+        &self,
+        call: &Call,
+        account_nonce: T::Index,
+        other_params: <T::ExtrinsicParams as ExtrinsicParams<T::Index, T::Hash>>::OtherParams,
+    ) -> Result<Vec<u8>, Error>
+    where
+        Call: TxPayload,
+    {
+        // 1. Validate this call against the current node metadata if the call comes
+        // with a hash allowing us to do so.
+        self.validate(call)?;
+
+        // 2. SCALE encode call data to bytes (pallet u8, call u8, call params).
+        let call_data = Encoded(self.call_data(call)?);
+
+        // 3. Construct our custom additional/extra params.
+        let additional_and_extra_params = {
+            // Obtain spec version and transaction version from the runtime version of the client.
+            let runtime = self.client.runtime_version();
+            <T::ExtrinsicParams as ExtrinsicParams<T::Index, T::Hash>>::new(
+                runtime.spec_version,
+                runtime.transaction_version,
+                account_nonce,
+                self.client.genesis_hash(),
+                other_params,
+            )
+        };
+
+        tracing::debug!(
+            "tx additional_and_extra_params: {:?}",
+            additional_and_extra_params
+        );
+
+        // 4. Construct signature. This is compatible with the Encode impl
+        //    for SignedPayload (which is this payload of bytes that we'd like)
+        //    to sign. See:
+        //    https://github.com/paritytech/substrate/blob/9a6d706d8db00abb6ba183839ec98ecd9924b1f8/primitives/runtime/src/generic/unchecked_extrinsic.rs#L215)
+        let mut bytes = Vec::new();
+        call_data.encode_to(&mut bytes);
+        additional_and_extra_params.encode_extra_to(&mut bytes);
+        additional_and_extra_params.encode_additional_to(&mut bytes);
+        Ok(if bytes.len() > 256 {
+            sp_core::blake2_256(&bytes).to_vec()
+        } else {
+            bytes
+        })
+    }
+
+    /// Some horrible hacky stuff.
+    pub fn create_signed_from_prepared(
+        &self,
+        address: &[u8],
+        signature: &[u8],
+        extra_params_plus_call_data: &[u8],
+    ) -> Result<SubmittableExtrinsic<T, C>, Error> {
+        let extrinsic = {
+            let mut encoded_inner = Vec::new();
+            // "is signed" + transaction protocol version (4)
+            (0b10000000 + 4u8).encode_to(&mut encoded_inner);
+            // from address for signature
+            address.encode_to(&mut encoded_inner);
+            // the signature bytes
+            signature.encode_to(&mut encoded_inner);
+            // attach custom extra params
+            // and now, call data
+            extra_params_plus_call_data.encode_to(&mut encoded_inner);
+            // now, prefix byte length:
+            let len = Compact(
+                u32::try_from(encoded_inner.len())
+                    .expect("extrinsic size expected to be <4GB"),
+            );
+            let mut encoded = Vec::new();
+            len.encode_to(&mut encoded);
+            encoded.extend(encoded_inner);
+            encoded
+        };
+
+        // Wrap in Encoded to ensure that any more "encode" calls leave it in the right state.
+        // maybe we can just return the raw bytes..
         Ok(SubmittableExtrinsic::from_bytes(
             self.client.clone(),
             extrinsic,
