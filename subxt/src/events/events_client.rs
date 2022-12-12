@@ -5,25 +5,12 @@
 use crate::{
     client::OnlineClientT,
     error::Error,
-    events::{
-        EventSub,
-        EventSubscription,
-        Events,
-        FinalizedEventSub,
-    },
+    events::{EventSub, EventSubscription, Events, FinalizedEventSub},
     Config,
 };
 use derivative::Derivative;
-use futures::{
-    future::Either,
-    stream,
-    Stream,
-    StreamExt,
-};
-use sp_core::{
-    storage::StorageKey,
-    twox_128,
-};
+use futures::{future::Either, stream, Stream, StreamExt};
+use sp_core::{storage::StorageKey, twox_128};
 use sp_runtime::traits::Header;
 use std::future::Future;
 
@@ -131,13 +118,11 @@ where
     // for the latest block and use that.
     let block_hash = match block_hash {
         Some(hash) => hash,
-        None => {
-            client
-                .rpc()
-                .block_hash(None)
-                .await?
-                .expect("didn't pass a block number; qed")
-        }
+        None => client
+            .rpc()
+            .block_hash(None)
+            .await?
+            .expect("didn't pass a block number; qed"),
     };
 
     let event_bytes = client

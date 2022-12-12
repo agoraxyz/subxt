@@ -4,19 +4,9 @@
 
 use super::storage_map_key::StorageMapKey;
 use crate::{
-    dynamic::{
-        DecodedValue,
-        Value,
-    },
-    error::{
-        Error,
-        StorageAddressError,
-    },
-    metadata::{
-        DecodeWithMetadata,
-        EncodeWithMetadata,
-        Metadata,
-    },
+    dynamic::{DecodedValue, Value},
+    error::{Error, StorageAddressError},
+    metadata::{DecodeWithMetadata, EncodeWithMetadata, Metadata},
 };
 use frame_metadata::StorageEntryType;
 use scale_info::TypeDef;
@@ -251,7 +241,7 @@ where
                         expected: type_ids.len(),
                         actual: self.storage_entry_keys.len(),
                     }
-                    .into())
+                    .into());
                 }
 
                 if hashers.len() == 1 {

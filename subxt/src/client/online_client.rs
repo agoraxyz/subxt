@@ -2,24 +2,15 @@
 // This file is dual-licensed as Apache-2.0 or GPL-3.0.
 // see LICENSE for license details.
 
-use super::{
-    OfflineClient,
-    OfflineClientT,
-};
+use super::{OfflineClient, OfflineClientT};
 use crate::{
     constants::ConstantsClient,
     error::Error,
     events::EventsClient,
-    rpc::{
-        Rpc,
-        RpcClientT,
-        RuntimeVersion,
-        Subscription,
-    },
+    rpc::{Rpc, RpcClientT, RuntimeVersion, Subscription},
     storage::StorageClient,
     tx::TxClient,
-    Config,
-    Metadata,
+    Config, Metadata,
 };
 use derivative::Derivative;
 use futures::future;
@@ -245,7 +236,7 @@ impl<T: Config> ClientRuntimeUpdater<T> {
     /// Tries to apply a new update.
     pub fn apply_update(&self, update: Update) -> Result<(), UpgradeError> {
         if !self.is_runtime_version_different(&update.runtime_version) {
-            return Err(UpgradeError::SameVersion)
+            return Err(UpgradeError::SameVersion);
         }
 
         self.do_update(update);
@@ -347,17 +338,10 @@ impl Update {
 mod jsonrpsee_helpers {
     pub use jsonrpsee::{
         client_transport::ws::{
-            InvalidUri,
-            Receiver,
-            Sender,
-            Uri,
-            WsTransportClientBuilder,
+            InvalidUri, Receiver, Sender, Uri, WsTransportClientBuilder,
         },
         core::{
-            client::{
-                Client,
-                ClientBuilder,
-            },
+            client::{Client, ClientBuilder},
             Error,
         },
     };
@@ -387,10 +371,7 @@ mod jsonrpsee_helpers {
     pub use jsonrpsee::{
         client_transport::web,
         core::{
-            client::{
-                Client,
-                ClientBuilder,
-            },
+            client::{Client, ClientBuilder},
             Error,
         },
     };

@@ -39,41 +39,17 @@
 //! # }
 //! ```
 
-use super::{
-    rpc_params,
-    RpcClient,
-    RpcClientT,
-    Subscription,
-};
-use crate::{
-    error::Error,
-    utils::PhantomDataSendSync,
-    Config,
-    Metadata,
-};
-use codec::{
-    Decode,
-    Encode,
-};
+use super::{rpc_params, RpcClient, RpcClientT, Subscription};
+use crate::{error::Error, utils::PhantomDataSendSync, Config, Metadata};
+use codec::{Decode, Encode};
 use frame_metadata::RuntimeMetadataPrefixed;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 use sp_core::{
-    storage::{
-        StorageChangeSet,
-        StorageData,
-        StorageKey,
-    },
-    Bytes,
-    U256,
+    storage::{StorageChangeSet, StorageData, StorageKey},
+    Bytes, U256,
 };
 use sp_runtime::{
-    generic::{
-        Block,
-        SignedBlock,
-    },
+    generic::{Block, SignedBlock},
     ApplyExtrinsicResult,
 };
 use std::collections::HashMap;

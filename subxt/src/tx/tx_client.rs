@@ -14,6 +14,12 @@ use codec::{Compact, Encode};
 use derivative::Derivative;
 use sp_runtime::{traits::Hash, ApplyExtrinsicResult};
 
+#[derive(Clone, Debug)]
+pub struct PreparedMsgWithParams {
+    pub prepared_msg: Vec<u8>,
+    pub encoded_params: Vec<u8>,
+}
+
 /// A client for working with transactions.
 #[derive(Derivative)]
 #[derivative(Clone(bound = "Client: Clone"))]
@@ -110,7 +116,7 @@ impl<T: Config, C: OfflineClientT<T>> TxClient<T, C> {
         call: &Call,
         account_nonce: T::Index,
         other_params: <T::ExtrinsicParams as ExtrinsicParams<T::Index, T::Hash>>::OtherParams,
-    ) -> Result<Vec<u8>, Error>
+    ) -> Result<PreparedMsgWithParams, Error>
     where
         Call: TxPayload,
     {
@@ -147,19 +153,29 @@ impl<T: Config, C: OfflineClientT<T>> TxClient<T, C> {
         call_data.encode_to(&mut bytes);
         additional_and_extra_params.encode_extra_to(&mut bytes);
         additional_and_extra_params.encode_additional_to(&mut bytes);
-        Ok(if bytes.len() > 256 {
+        let prepared_msg = if bytes.len() > 256 {
             sp_core::blake2_256(&bytes).to_vec()
         } else {
             bytes
+        };
+
+        let mut encoded_params = Vec::new();
+        additional_and_extra_params.encode_extra_to(&mut encoded_params);
+        call_data.encode_to(&mut encoded_params);
+
+        Ok(PreparedMsgWithParams {
+            prepared_msg,
+            encoded_params,
         })
     }
 
-    /// Some horrible hacky stuff.
-    pub fn create_signed_from_prepared(
+    /// Pack the signer's address, signature and additional params into a
+    /// submittable extrinsic.
+    pub fn pack_into_submittable(
         &self,
-        address: &[u8],
-        signature: &[u8],
-        extra_params_plus_call_data: &[u8],
+        address: T::Address,
+        signature: T::Signature,
+        encoded_params: &[u8],
     ) -> Result<SubmittableExtrinsic<T, C>, Error> {
         let extrinsic = {
             let mut encoded_inner = Vec::new();
@@ -171,7 +187,7 @@ impl<T: Config, C: OfflineClientT<T>> TxClient<T, C> {
             signature.encode_to(&mut encoded_inner);
             // attach custom extra params
             // and now, call data
-            extra_params_plus_call_data.encode_to(&mut encoded_inner);
+            encoded_params.encode_to(&mut encoded_inner);
             // now, prefix byte length:
             let len = Compact(
                 u32::try_from(encoded_inner.len())
@@ -189,6 +205,15 @@ impl<T: Config, C: OfflineClientT<T>> TxClient<T, C> {
             self.client.clone(),
             extrinsic,
         ))
+    }
+
+    /// Creates a new, unsigned message that can be externally signed.
+    pub fn prepare_unsigned<Call>(
+        &self,
+        call: &Call,
+        other_params: <T::ExtrinsicParams as ExtrinsicParams<T::Index, T::Hash>>::OtherParams,
+    ) -> Result<PreparedMsgWithParams, Error> {
+        todo!();
     }
 
     /// Creates a raw signed extrinsic without submitting it.

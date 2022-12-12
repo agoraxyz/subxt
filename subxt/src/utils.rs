@@ -4,11 +4,7 @@
 
 //! Miscellaneous utility helpers.
 
-use codec::{
-    Decode,
-    DecodeAll,
-    Encode,
-};
+use codec::{Decode, DecodeAll, Encode};
 use derivative::Derivative;
 
 /// Wraps an already encoded byte vector, prevents being encoded as a raw byte vector as part of

@@ -13,21 +13,10 @@ mod metadata_type;
 pub use metadata_location::MetadataLocation;
 
 pub use metadata_type::{
-    ErrorMetadata,
-    EventFieldMetadata,
-    EventMetadata,
-    InvalidMetadataError,
-    Metadata,
-    MetadataError,
-    PalletMetadata,
+    ErrorMetadata, EventFieldMetadata, EventMetadata, InvalidMetadataError, Metadata,
+    MetadataError, PalletMetadata,
 };
 
-pub use decode_with_metadata::{
-    DecodeStaticType,
-    DecodeWithMetadata,
-};
+pub use decode_with_metadata::{DecodeStaticType, DecodeWithMetadata};
 
-pub use encode_with_metadata::{
-    EncodeStaticType,
-    EncodeWithMetadata,
-};
+pub use encode_with_metadata::{EncodeStaticType, EncodeWithMetadata};

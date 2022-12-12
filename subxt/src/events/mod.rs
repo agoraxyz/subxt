@@ -11,30 +11,16 @@ mod events_client;
 mod events_type;
 mod filter_events;
 
-pub use event_subscription::{
-    EventSub,
-    EventSubscription,
-    FinalizedEventSub,
-};
+pub use event_subscription::{EventSub, EventSubscription, FinalizedEventSub};
 pub use events_client::{
     // Exposed only for testing:
     subscribe_to_block_headers_filling_in_gaps,
     EventsClient,
 };
-pub use events_type::{
-    EventDetails,
-    Events,
-};
-pub use filter_events::{
-    EventFilter,
-    FilterEvents,
-    FilteredEventDetails,
-};
+pub use events_type::{EventDetails, Events};
+pub use filter_events::{EventFilter, FilterEvents, FilteredEventDetails};
 
-use codec::{
-    Decode,
-    Encode,
-};
+use codec::{Decode, Encode};
 
 /// Trait to uniquely identify the events's identity from the runtime metadata.
 ///

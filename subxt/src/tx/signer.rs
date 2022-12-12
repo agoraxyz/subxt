@@ -7,10 +7,7 @@
 
 use crate::Config;
 use sp_core::Pair;
-use sp_runtime::traits::{
-    IdentifyAccount,
-    Verify,
-};
+use sp_runtime::traits::{IdentifyAccount, Verify};
 
 /// Signing transactions requires a [`Signer`]. This is responsible for
 /// providing the "from" account that the transaction is being signed by,

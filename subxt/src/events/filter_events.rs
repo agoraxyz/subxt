@@ -4,23 +4,10 @@
 
 //! Filtering individual events from subscriptions.
 
-use super::{
-    Events,
-    Phase,
-    StaticEvent,
-};
-use crate::{
-    Config,
-    Error,
-};
-use futures::{
-    Stream,
-    StreamExt,
-};
-use std::{
-    marker::Unpin,
-    task::Poll,
-};
+use super::{Events, Phase, StaticEvent};
+use crate::{Config, Error};
+use futures::{Stream, StreamExt};
+use std::{marker::Unpin, task::Poll};
 
 /// A stream which filters events based on the `Filter` param provided.
 /// If `Filter` is a 1-tuple of a single `Event` type, it will return every
@@ -154,11 +141,11 @@ impl<Ev: StaticEvent> EventFilter for (Ev,) {
                         phase: raw_event.phase(),
                         block_hash,
                         event,
-                    }))
+                    }));
                 }
                 if let Err(e) = ev {
                     // We hit an error. Return it.
-                    return Some(Err(e.into()))
+                    return Some(Err(e.into()));
                 }
             }
             None
@@ -221,27 +208,12 @@ impl_event_filter!(A 0, B 1, C 2, D 3, E 4, F 5, G 6, H 7);
 #[cfg(test)]
 mod test {
     use super::{
-        super::events_type::test_utils::{
-            event_record,
-            events,
-            metadata,
-        },
+        super::events_type::test_utils::{event_record, events, metadata},
         *,
     };
-    use crate::{
-        Config,
-        Metadata,
-        SubstrateConfig,
-    };
-    use codec::{
-        Decode,
-        Encode,
-    };
-    use futures::{
-        stream,
-        Stream,
-        StreamExt,
-    };
+    use crate::{Config, Metadata, SubstrateConfig};
+    use codec::{Decode, Encode};
+    use futures::{stream, Stream, StreamExt};
     use scale_info::TypeInfo;
 
     // Some pretend events in a pallet

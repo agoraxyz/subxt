@@ -3,13 +3,8 @@
 // see LICENSE for license details.
 
 use crate::{
-    constants::ConstantsClient,
-    events::EventsClient,
-    rpc::RuntimeVersion,
-    storage::StorageClient,
-    tx::TxClient,
-    Config,
-    Metadata,
+    constants::ConstantsClient, events::EventsClient, rpc::RuntimeVersion,
+    storage::StorageClient, tx::TxClient, Config, Metadata,
 };
 use derivative::Derivative;
 use std::sync::Arc;

@@ -62,16 +62,6 @@ mod rpc_client_t;
 // Expose the `Rpc` struct and any associated types.
 pub use rpc::*;
 
-pub use rpc_client_t::{
-    RawValue,
-    RpcClientT,
-    RpcFuture,
-    RpcSubscription,
-};
+pub use rpc_client_t::{RawValue, RpcClientT, RpcFuture, RpcSubscription};
 
-pub use rpc_client::{
-    rpc_params,
-    RpcClient,
-    RpcParams,
-    Subscription,
-};
+pub use rpc_client::{rpc_params, RpcClient, RpcParams, Subscription};
