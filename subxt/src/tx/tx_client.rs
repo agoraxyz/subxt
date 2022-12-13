@@ -203,7 +203,7 @@ impl<T: Config, C: OfflineClientT<T>> TxClient<T, C> {
             signature.encode_to(&mut encoded_inner);
             // attach custom extra params
             // and now, call data
-            encoded_params.encode_to(&mut encoded_inner);
+            encoded_inner.extend_from_slice(encoded_params);
             // now, prefix byte length:
             let len = Compact(
                 u32::try_from(encoded_inner.len())
@@ -337,15 +337,12 @@ where
     }
 
     /// Pack signer output and other parameters then submit.
-    pub async fn pack_and_submit_then_watch<Call>(
+    pub async fn pack_and_submit_then_watch(
         &self,
         address: T::Address,
         signature: T::Signature,
         encoded_params: &[u8],
-    ) -> Result<TxProgress<T, C>, Error>
-    where
-        Call: TxPayload,
-    {
+    ) -> Result<TxProgress<T, C>, Error> {
         self.pack_into_submittable(address, signature, encoded_params)?
             .submit_and_watch()
             .await
