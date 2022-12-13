@@ -8,13 +8,31 @@ use std::task::Poll;
 
 use crate::{
     client::OnlineClientT,
-    error::{DispatchError, Error, RpcError, TransactionError},
-    events::{self, EventDetails, Events, EventsClient, Phase, StaticEvent},
-    rpc::{Subscription, SubstrateTxStatus},
+    error::{
+        DispatchError,
+        Error,
+        RpcError,
+        TransactionError,
+    },
+    events::{
+        self,
+        EventDetails,
+        Events,
+        EventsClient,
+        Phase,
+        StaticEvent,
+    },
+    rpc::{
+        Subscription,
+        SubstrateTxStatus,
+    },
     Config,
 };
 use derivative::Derivative;
-use futures::{Stream, StreamExt};
+use futures::{
+    Stream,
+    StreamExt,
+};
 use sp_runtime::traits::Hash;
 
 pub use sp_runtime::traits::SignedExtension;
@@ -152,11 +170,13 @@ impl<T: Config, C: OnlineClientT<T>> Stream for TxProgress<T, C> {
                 SubstrateTxStatus::Future => TxStatus::Future,
                 SubstrateTxStatus::Ready => TxStatus::Ready,
                 SubstrateTxStatus::Broadcast(peers) => TxStatus::Broadcast(peers),
-                SubstrateTxStatus::InBlock(hash) => TxStatus::InBlock(TxInBlock::new(
-                    hash,
-                    self.ext_hash,
-                    self.client.clone(),
-                )),
+                SubstrateTxStatus::InBlock(hash) => {
+                    TxStatus::InBlock(TxInBlock::new(
+                        hash,
+                        self.ext_hash,
+                        self.client.clone(),
+                    ))
+                }
                 SubstrateTxStatus::Retracted(hash) => TxStatus::Retracted(hash),
                 SubstrateTxStatus::Usurped(hash) => TxStatus::Usurped(hash),
                 SubstrateTxStatus::Dropped => TxStatus::Dropped,
@@ -332,7 +352,7 @@ impl<T: Config, C: OnlineClientT<T>> TxInBlock<T, C> {
             if ev.pallet_name() == "System" && ev.variant_name() == "ExtrinsicFailed" {
                 let dispatch_error =
                     DispatchError::decode_from(ev.field_bytes(), &self.client.metadata());
-                return Err(dispatch_error.into());
+                return Err(dispatch_error.into())
             }
         }
 

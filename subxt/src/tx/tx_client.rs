@@ -4,15 +4,31 @@
 
 use super::TxPayload;
 use crate::{
-    client::{OfflineClientT, OnlineClientT},
+    client::{
+        OfflineClientT,
+        OnlineClientT,
+    },
     error::Error,
-    tx::{ExtrinsicParams, Signer, TxProgress},
-    utils::{Encoded, PhantomDataSendSync},
+    tx::{
+        ExtrinsicParams,
+        Signer,
+        TxProgress,
+    },
+    utils::{
+        Encoded,
+        PhantomDataSendSync,
+    },
     Config,
 };
-use codec::{Compact, Encode};
+use codec::{
+    Compact,
+    Encode,
+};
 use derivative::Derivative;
-use sp_runtime::{traits::Hash, ApplyExtrinsicResult};
+use sp_runtime::{
+    traits::Hash,
+    ApplyExtrinsicResult,
+};
 
 #[derive(Clone, Debug)]
 pub struct PreparedMsgWithParams {
@@ -56,7 +72,7 @@ impl<T: Config, C: OfflineClientT<T>> TxClient<T, C> {
                     details.pallet_name.into(),
                     details.call_name.into(),
                 )
-                .into());
+                .into())
             }
         }
         Ok(())
@@ -207,15 +223,6 @@ impl<T: Config, C: OfflineClientT<T>> TxClient<T, C> {
         ))
     }
 
-    /// Creates a new, unsigned message that can be externally signed.
-    pub fn prepare_unsigned<Call>(
-        &self,
-        call: &Call,
-        other_params: <T::ExtrinsicParams as ExtrinsicParams<T::Index, T::Hash>>::OtherParams,
-    ) -> Result<PreparedMsgWithParams, Error> {
-        todo!();
-    }
-
     /// Creates a raw signed extrinsic without submitting it.
     pub fn create_signed_with_nonce<Call>(
         &self,
@@ -309,6 +316,40 @@ where
     T: Config,
     C: OnlineClientT<T>,
 {
+    /// Creates a new, unsigned message that can be externally signed.
+    pub async fn prepare_unsigned<Call>(
+        &self,
+        call: &Call,
+        account_id: &T::AccountId,
+        other_params: <T::ExtrinsicParams as ExtrinsicParams<T::Index, T::Hash>>::OtherParams,
+    ) -> Result<PreparedMsgWithParams, Error>
+    where
+        Call: TxPayload,
+    {
+        // Get nonce from the node.
+        let nonce = self
+            .client
+            .rpc()
+            .system_account_next_index(account_id)
+            .await?;
+
+        self.prepare_call_to_msg(call, nonce, other_params)
+    }
+
+    /// Pack signer output and other parameters then submit.
+    pub async fn pack_and_submit_then_watch<Call>(
+        &self,
+        address: T::Address,
+        signature: T::Signature,
+        encoded_params: &[u8],
+    ) -> Result<TxProgress<T, C>, Error>
+    where
+        Call: TxPayload,
+    {
+        self.pack_into_submittable(address, signature, encoded_params)?
+            .submit_and_watch()
+            .await
+    }
     /// Creates a raw signed extrinsic, without submitting it.
     pub async fn create_signed<Call>(
         &self,

@@ -8,10 +8,20 @@
 //! default Substrate node implementation, and [`PolkadotConfig`] for a
 //! Polkadot node.
 
-use codec::{Codec, Encode, EncodeLike};
+use codec::{
+    Codec,
+    Encode,
+    EncodeLike,
+};
 use core::fmt::Debug;
 use sp_runtime::traits::{
-    AtLeast32Bit, Extrinsic, Hash, Header, MaybeSerializeDeserialize, Member, Verify,
+    AtLeast32Bit,
+    Extrinsic,
+    Hash,
+    Header,
+    MaybeSerializeDeserialize,
+    Member,
+    Verify,
 };
 
 /// Runtime types.

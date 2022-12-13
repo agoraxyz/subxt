@@ -3,7 +3,10 @@
 // see LICENSE for license details.
 
 use super::Metadata;
-use crate::{dynamic::DecodedValue, error::Error};
+use crate::{
+    dynamic::DecodedValue,
+    error::Error,
+};
 use codec::Decode;
 use frame_metadata::StorageEntryType;
 

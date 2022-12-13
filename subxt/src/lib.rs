@@ -111,7 +111,6 @@
 
 #![deny(
     bad_style,
-    const_err,
     improper_ctypes,
     missing_docs,
     non_shorthand_field_patterns,
@@ -156,8 +155,15 @@ pub mod utils;
 // Expose a few of the most common types at root,
 // but leave most types behind their respoctive modules.
 pub use crate::{
-    client::{OfflineClient, OnlineClient},
-    config::{Config, PolkadotConfig, SubstrateConfig},
+    client::{
+        OfflineClient,
+        OnlineClient,
+    },
+    config::{
+        Config,
+        PolkadotConfig,
+        SubstrateConfig,
+    },
     error::Error,
     metadata::Metadata,
 };

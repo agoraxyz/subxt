@@ -26,12 +26,35 @@ mod tx_progress;
 
 pub use self::{
     params::{
-        AssetTip, BaseExtrinsicParams, BaseExtrinsicParamsBuilder, Era, ExtrinsicParams,
-        PlainTip, PolkadotExtrinsicParams, PolkadotExtrinsicParamsBuilder,
-        SubstrateExtrinsicParams, SubstrateExtrinsicParamsBuilder,
+        AssetTip,
+        BaseExtrinsicParams,
+        BaseExtrinsicParamsBuilder,
+        Era,
+        ExtrinsicParams,
+        PlainTip,
+        PolkadotExtrinsicParams,
+        PolkadotExtrinsicParamsBuilder,
+        SubstrateExtrinsicParams,
+        SubstrateExtrinsicParamsBuilder,
     },
-    signer::{PairSigner, Signer},
-    tx_client::{SubmittableExtrinsic, TxClient},
-    tx_payload::{dynamic, DynamicTxPayload, StaticTxPayload, TxPayload},
-    tx_progress::{TxEvents, TxInBlock, TxProgress, TxStatus},
+    signer::{
+        PairSigner,
+        Signer,
+    },
+    tx_client::{
+        SubmittableExtrinsic,
+        TxClient,
+    },
+    tx_payload::{
+        dynamic,
+        DynamicTxPayload,
+        StaticTxPayload,
+        TxPayload,
+    },
+    tx_progress::{
+        TxEvents,
+        TxInBlock,
+        TxProgress,
+        TxStatus,
+    },
 };

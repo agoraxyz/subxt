@@ -3,7 +3,10 @@
 // see LICENSE for license details.
 
 use parking_lot::RwLock;
-use std::{borrow::Cow, collections::HashMap};
+use std::{
+    borrow::Cow,
+    collections::HashMap,
+};
 
 /// A cache with the simple goal of storing 32 byte hashes against pallet+item keys
 #[derive(Default, Debug)]
@@ -30,7 +33,7 @@ impl HashCache {
             .copied();
 
         if let Some(hash) = maybe_hash {
-            return Ok(hash);
+            return Ok(hash)
         }
 
         let hash = f()?;

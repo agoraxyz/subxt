@@ -4,9 +4,21 @@
 
 //! A representation of a block of events.
 
-use super::{Phase, StaticEvent};
-use crate::{error::Error, metadata::EventMetadata, Config, Metadata};
-use codec::{Compact, Decode, Error as CodecError};
+use super::{
+    Phase,
+    StaticEvent,
+};
+use crate::{
+    error::Error,
+    metadata::EventMetadata,
+    Config,
+    Metadata,
+};
+use codec::{
+    Compact,
+    Decode,
+    Error as CodecError,
+};
 use derivative::Derivative;
 use std::sync::Arc;
 
@@ -332,15 +344,24 @@ impl EventDetails {
 #[cfg(test)]
 pub(crate) mod test_utils {
     use super::*;
-    use crate::{Config, SubstrateConfig};
+    use crate::{
+        Config,
+        SubstrateConfig,
+    };
     use codec::Encode;
     use frame_metadata::{
         v14::{
-            ExtrinsicMetadata, PalletEventMetadata, PalletMetadata, RuntimeMetadataV14,
+            ExtrinsicMetadata,
+            PalletEventMetadata,
+            PalletMetadata,
+            RuntimeMetadataV14,
         },
         RuntimeMetadataPrefixed,
     };
-    use scale_info::{meta_type, TypeInfo};
+    use scale_info::{
+        meta_type,
+        TypeInfo,
+    };
     use std::convert::TryFrom;
 
     /// An "outer" events enum containing exactly one event.
@@ -430,7 +451,11 @@ pub(crate) mod test_utils {
 #[cfg(test)]
 mod tests {
     use super::{
-        test_utils::{event_record, events, events_raw},
+        test_utils::{
+            event_record,
+            events,
+            events_raw,
+        },
         *,
     };
     use codec::Encode;

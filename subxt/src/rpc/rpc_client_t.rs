@@ -4,7 +4,10 @@
 
 use crate::error::RpcError;
 use futures::Stream;
-use std::{future::Future, pin::Pin};
+use std::{
+    future::Future,
+    pin::Pin,
+};
 
 // Re-exporting for simplicity since it's used a bunch in the trait definition.
 pub use serde_json::value::RawValue;

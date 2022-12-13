@@ -5,14 +5,32 @@
 //! Subscribing to events.
 
 use crate::{
-    client::OnlineClientT, error::Error, events::EventsClient, rpc::Subscription, Config,
+    client::OnlineClientT,
+    error::Error,
+    events::EventsClient,
+    rpc::Subscription,
+    Config,
 };
 use derivative::Derivative;
-use futures::{stream::BoxStream, Future, FutureExt, Stream, StreamExt};
+use futures::{
+    stream::BoxStream,
+    Future,
+    FutureExt,
+    Stream,
+    StreamExt,
+};
 use sp_runtime::traits::Header;
-use std::{marker::Unpin, task::Poll};
+use std::{
+    marker::Unpin,
+    task::Poll,
+};
 
-pub use super::{EventDetails, EventFilter, Events, FilterEvents};
+pub use super::{
+    EventDetails,
+    EventFilter,
+    Events,
+    FilterEvents,
+};
 
 /// A Subscription. This forms a part of the `EventSubscription` type handed back
 /// in codegen from `subscribe_finalized`, and is exposed to be used in codegen.
@@ -127,7 +145,7 @@ where
     ) -> std::task::Poll<Option<Self::Item>> {
         // We are finished; return None.
         if self.finished {
-            return Poll::Ready(None);
+            return Poll::Ready(None)
         }
 
         // If there isn't an `at` function yet that's busy resolving a block hash into
@@ -136,11 +154,11 @@ where
             match futures::ready!(self.block_header_subscription.poll_next_unpin(cx)) {
                 None => {
                     self.finished = true;
-                    return Poll::Ready(None);
+                    return Poll::Ready(None)
                 }
                 Some(Err(e)) => {
                     self.finished = true;
-                    return Poll::Ready(Some(Err(e.into())));
+                    return Poll::Ready(Some(Err(e.into())))
                 }
                 Some(Ok(block_header)) => {
                     // Note [jsdw]: We may be able to get rid of the per-item allocation

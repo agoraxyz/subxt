@@ -6,7 +6,10 @@ use super::ConstantAddress;
 use crate::{
     client::OfflineClientT,
     error::Error,
-    metadata::{DecodeWithMetadata, MetadataError},
+    metadata::{
+        DecodeWithMetadata,
+        MetadataError,
+    },
     Config,
 };
 use derivative::Derivative;
@@ -48,7 +51,7 @@ impl<T: Config, Client: OfflineClientT<T>> ConstantsClient<T, Client> {
                     address.pallet_name().into(),
                     address.constant_name().into(),
                 )
-                .into());
+                .into())
             }
         }
         Ok(())

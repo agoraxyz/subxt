@@ -2,12 +2,25 @@
 // This file is dual-licensed as Apache-2.0 or GPL-3.0.
 // see LICENSE for license details.
 
-use super::{RpcClientT, RpcSubscription};
+use super::{
+    RpcClientT,
+    RpcSubscription,
+};
 use crate::error::Error;
-use futures::{Stream, StreamExt};
-use serde::{de::DeserializeOwned, Serialize};
+use futures::{
+    Stream,
+    StreamExt,
+};
+use serde::{
+    de::DeserializeOwned,
+    Serialize,
+};
 use serde_json::value::RawValue;
-use std::{pin::Pin, sync::Arc, task::Poll};
+use std::{
+    pin::Pin,
+    sync::Arc,
+    task::Poll,
+};
 
 /// A concrete wrapper around an [`RpcClientT`] which exposes the udnerlying interface via some
 /// higher level methods that make it a little easier to work with.

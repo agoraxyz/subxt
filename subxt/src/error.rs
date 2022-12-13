@@ -11,8 +11,14 @@ use scale_info::TypeDef;
 use std::borrow::Cow;
 
 // Re-expose the errors we use from other crates here:
-pub use crate::metadata::{InvalidMetadataError, MetadataError};
-pub use scale_value::scale::{DecodeError, EncodeError};
+pub use crate::metadata::{
+    InvalidMetadataError,
+    MetadataError,
+};
+pub use scale_value::scale::{
+    DecodeError,
+    EncodeError,
+};
 pub use sp_core::crypto::SecretStringError;
 pub use sp_runtime::transaction_validity::TransactionValidityError;
 
@@ -128,7 +134,7 @@ impl DispatchError {
                 tracing::warn!(
                     "Can't decode error: sp_runtime::DispatchError was not found in Metadata"
                 );
-                return DispatchError::Other(bytes.into_owned());
+                return DispatchError::Other(bytes.into_owned())
             }
         };
 
@@ -136,7 +142,7 @@ impl DispatchError {
             Some(ty) => ty,
             None => {
                 tracing::warn!("Can't decode error: sp_runtime::DispatchError type ID doesn't resolve to a known type");
-                return DispatchError::Other(bytes.into_owned());
+                return DispatchError::Other(bytes.into_owned())
             }
         };
 
@@ -146,7 +152,7 @@ impl DispatchError {
                 tracing::warn!(
                     "Can't decode error: sp_runtime::DispatchError type is not a Variant"
                 );
-                return DispatchError::Other(bytes.into_owned());
+                return DispatchError::Other(bytes.into_owned())
             }
         };
 
@@ -159,14 +165,14 @@ impl DispatchError {
             Some(idx) => idx,
             None => {
                 tracing::warn!("Can't decode error: sp_runtime::DispatchError does not have a 'Module' variant");
-                return DispatchError::Other(bytes.into_owned());
+                return DispatchError::Other(bytes.into_owned())
             }
         };
 
         // If the error bytes don't correspond to a ModuleError, just return the bytes.
         // This is perfectly reasonable and expected, so no logging.
         if bytes[0] != module_variant_idx {
-            return DispatchError::Other(bytes.into_owned());
+            return DispatchError::Other(bytes.into_owned())
         }
 
         // The remaining bytes are the module error, all being well:
@@ -194,7 +200,7 @@ impl DispatchError {
                     Ok(err) => err,
                     Err(_) => {
                         tracing::warn!("Can't decode error: sp_runtime::DispatchError does not match known formats");
-                        return DispatchError::Other(bytes.to_vec());
+                        return DispatchError::Other(bytes.to_vec())
                     }
                 };
                 CurrentModuleError {
@@ -208,7 +214,7 @@ impl DispatchError {
             Ok(details) => details,
             Err(_) => {
                 tracing::warn!("Can't decode error: sp_runtime::DispatchError::Module details do not match known information");
-                return DispatchError::Other(bytes.to_vec());
+                return DispatchError::Other(bytes.to_vec())
             }
         };
 

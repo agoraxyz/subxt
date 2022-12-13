@@ -7,7 +7,10 @@
 //! the trait itself.
 
 use super::StorageAddress;
-use crate::{error::Error, metadata::Metadata};
+use crate::{
+    error::Error,
+    metadata::Metadata,
+};
 
 /// Return the root of a given [`StorageAddress`]: hash the pallet name and entry name
 /// and append those bytes to the output.

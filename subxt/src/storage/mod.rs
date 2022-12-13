@@ -10,7 +10,10 @@ mod storage_map_key;
 
 pub mod utils;
 
-pub use storage_client::{KeyIter, StorageClient};
+pub use storage_client::{
+    KeyIter,
+    StorageClient,
+};
 
 // Re-export as this is used in the public API:
 pub use sp_core::storage::StorageKey;
@@ -20,15 +23,26 @@ pub use sp_core::storage::StorageKey;
 pub mod address {
     pub use super::{
         storage_address::{
-            dynamic, dynamic_root, DynamicStorageAddress, StaticStorageAddress,
-            StorageAddress, Yes,
+            dynamic,
+            dynamic_root,
+            DynamicStorageAddress,
+            StaticStorageAddress,
+            StorageAddress,
+            Yes,
         },
-        storage_map_key::{StorageHasher, StorageMapKey},
+        storage_map_key::{
+            StorageHasher,
+            StorageMapKey,
+        },
     };
 }
 
 // For consistency with other modules, also expose
 // the basic address stuff at the root of the module.
 pub use storage_address::{
-    dynamic, dynamic_root, DynamicStorageAddress, StaticStorageAddress, StorageAddress,
+    dynamic,
+    dynamic_root,
+    DynamicStorageAddress,
+    StaticStorageAddress,
+    StorageAddress,
 };

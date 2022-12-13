@@ -2,8 +2,14 @@
 // This file is dual-licensed as Apache-2.0 or GPL-3.0.
 // see LICENSE for license details.
 
-use crate::{utils::Encoded, Config};
-use codec::{Compact, Encode};
+use crate::{
+    utils::Encoded,
+    Config,
+};
+use codec::{
+    Compact,
+    Encode,
+};
 use core::fmt::Debug;
 use derivative::Derivative;
 
