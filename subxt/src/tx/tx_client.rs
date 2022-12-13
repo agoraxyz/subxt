@@ -25,12 +25,13 @@ use codec::{
     Encode,
 };
 use derivative::Derivative;
+use serde::{Serialize, Deserialize};
 use sp_runtime::{
     traits::Hash,
     ApplyExtrinsicResult,
 };
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct PreparedMsgWithParams {
     pub prepared_msg: Vec<u8>,
     pub encoded_params: Vec<u8>,
