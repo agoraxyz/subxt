@@ -42,6 +42,7 @@ pub use self::{
         Signer,
     },
     tx_client::{
+        PreparedMsgWithParams,
         SubmittableExtrinsic,
         TxClient,
     },

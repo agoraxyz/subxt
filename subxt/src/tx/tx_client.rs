@@ -25,15 +25,22 @@ use codec::{
     Encode,
 };
 use derivative::Derivative;
-use serde::{Serialize, Deserialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 use sp_runtime::{
     traits::Hash,
     ApplyExtrinsicResult,
 };
 
+/// Prepared tx data that's ready to be externally signed.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct PreparedMsgWithParams {
+    /// The message to be signed.
     pub prepared_msg: Vec<u8>,
+    /// Additional parameters that need to be encoded into the
+    /// signed transaction payload.
     pub encoded_params: Vec<u8>,
 }
 
