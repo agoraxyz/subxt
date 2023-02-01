@@ -281,7 +281,7 @@ async fn fetch_metadata_ws(url: &Uri) -> color_eyre::Result<String> {
 async fn fetch_metadata_http(url: &Uri) -> color_eyre::Result<String> {
     let client = HttpClientBuilder::default().build(url.to_string())?;
 
-    Ok(client.request::<String>("state_getMetadata", None).await?)
+    Ok(client.request::<String, &[String]>("state_getMetadata", &[]).await?)
 }
 
 async fn fetch_metadata(url: &Uri) -> color_eyre::Result<(String, Vec<u8>)> {
