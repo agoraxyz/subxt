@@ -14,14 +14,13 @@ description = "Submit extrinsics (transactions) to a substrate node via RPC"
 keywords = ["parity", "substrate", "blockchain"]
 
 [features]
-default = ["jsonrpsee-ws", "substrate-compat"]
+default = ["jsonrpsee-ws", "substrate-compat", "metadata"]
 
 # Activate this feature to pull in extra Substrate dependencies which make it
 # possible to provide a proper extrinsic Signer implementation (PairSigner).
-substrate-compat = [
-    "sp-core",
-    "sp-runtime"
-]
+substrate-compat = ["sp-core", "sp-runtime"]
+
+metadata = ["subxt-macro", "subxt-metadata"]
 
 # Activate this to expose functionality only used for integration testing.
 # The exposed functionality is subject to breaking changes at any point,
@@ -50,8 +49,8 @@ parking_lot = "0.12.0"
 frame-metadata = "15.0.0"
 derivative = "2.2.0"
 
-subxt-macro = { version = "0.26.0", path = "../macro" }
-subxt-metadata = { version = "0.26.0", path = "../metadata" }
+subxt-macro = { version = "0.26.0", path = "../macro", optional = true }
+subxt-metadata = { version = "0.26.0", path = "../metadata", optional = true }
 
 # Provides some deserialization, types like U256/H256 and hashing impls like twox/blake256:
 impl-serde = { version = "0.4.0" }

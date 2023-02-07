@@ -137,6 +137,7 @@
 #[cfg(test)]
 use tokio as _;
 
+#[cfg(feature = "metadata")]
 pub use subxt_macro::subxt;
 
 // Used to enable the js feature for wasm.
