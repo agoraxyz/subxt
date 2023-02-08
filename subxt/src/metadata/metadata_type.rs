@@ -158,7 +158,6 @@ impl Metadata {
     }
 
     /// Obtain the unique hash for a specific storage entry.
-    #[cfg(feature = "metadata")]
     pub fn storage_hash(
         &self,
         pallet: &str,
@@ -182,7 +181,6 @@ impl Metadata {
     }
 
     /// Obtain the unique hash for a constant.
-    #[cfg(feature = "metadata")]
     pub fn constant_hash(
         &self,
         pallet: &str,
@@ -206,7 +204,6 @@ impl Metadata {
     }
 
     /// Obtain the unique hash for a call.
-    #[cfg(feature = "metadata")]
     pub fn call_hash(
         &self,
         pallet: &str,
@@ -228,7 +225,6 @@ impl Metadata {
     }
 
     /// Obtain the unique hash for this metadata.
-    #[cfg(feature = "metadata")]
     pub fn metadata_hash<T: AsRef<str>>(&self, pallets: &[T]) -> [u8; 32] {
         if let Some(hash) = *self.inner.cached_metadata_hash.read() {
             return hash

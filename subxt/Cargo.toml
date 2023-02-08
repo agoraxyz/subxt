@@ -14,13 +14,11 @@ description = "Submit extrinsics (transactions) to a substrate node via RPC"
 keywords = ["parity", "substrate", "blockchain"]
 
 [features]
-default = ["jsonrpsee-ws", "substrate-compat", "metadata"]
+default = ["jsonrpsee-ws", "substrate-compat"]
 
 # Activate this feature to pull in extra Substrate dependencies which make it
 # possible to provide a proper extrinsic Signer implementation (PairSigner).
 substrate-compat = ["sp-core", "sp-runtime"]
-
-metadata = ["subxt-macro", "subxt-metadata"]
 
 # Activate this to expose functionality only used for integration testing.
 # The exposed functionality is subject to breaking changes at any point,
@@ -29,8 +27,16 @@ integration-tests = []
 
 # Jsonrpsee if the default RPC provider used in Subxt. However, it can be
 # swapped out for an alternative implementation, and so is optional.
-jsonrpsee-ws = ["jsonrpsee/async-client", "jsonrpsee/client-ws-transport"]
-jsonrpsee-web = ["jsonrpsee/async-wasm-client", "jsonrpsee/client-web-transport"]
+jsonrpsee-ws = [
+    "jsonrpsee/async-client",
+    "jsonrpsee/client-ws-transport",
+    "subxt-macro/jsonrpsee-ws"
+]
+jsonrpsee-web = [
+    "jsonrpsee/async-wasm-client",
+    "jsonrpsee/client-web-transport",
+    "subxt-macro/jsonrpsee-web"
+]
 
 [dependencies]
 codec = { package = "parity-scale-codec", version = "3.0.0", default-features = false, features = ["derive", "full"] }
@@ -49,8 +55,8 @@ parking_lot = "0.12.0"
 frame-metadata = "15.0.0"
 derivative = "2.2.0"
 
-subxt-macro = { version = "0.26.0", path = "../macro", optional = true }
-subxt-metadata = { version = "0.26.0", path = "../metadata", optional = true }
+subxt-macro = { version = "0.26.0", path = "../macro", default-features = false }
+subxt-metadata = { version = "0.26.0", path = "../metadata" }
 
 # Provides some deserialization, types like U256/H256 and hashing impls like twox/blake256:
 impl-serde = { version = "0.4.0" }
