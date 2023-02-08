@@ -8,9 +8,6 @@ mod constant_address;
 mod constants_client;
 
 pub use constant_address::{
-    dynamic,
-    ConstantAddress,
-    DynamicConstantAddress,
-    StaticConstantAddress,
+    dynamic, ConstantAddress, DynamicConstantAddress, StaticConstantAddress,
 };
 pub use constants_client::ConstantsClient;

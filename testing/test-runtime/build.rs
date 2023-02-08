@@ -3,17 +3,12 @@
 // see LICENSE for license details.
 
 use std::{
-    env,
-    fs,
+    env, fs,
     net::TcpListener,
-    ops::{
-        Deref,
-        DerefMut,
-    },
+    ops::{Deref, DerefMut},
     path::Path,
     process::Command,
-    thread,
-    time,
+    thread, time,
 };
 
 static SUBSTRATE_BIN_ENV_VAR: &str = "SUBSTRATE_NODE_PATH";
@@ -67,7 +62,7 @@ async fn run() {
             match res {
                 Ok(res) => {
                     let _ = cmd.kill();
-                    break res
+                    break res;
                 }
                 _ => {
                     thread::sleep(time::Duration::from_secs(1 << retries));
@@ -160,25 +155,15 @@ impl Drop for KillOnDrop {
 mod client {
     pub use jsonrpsee::{
         client_transport::ws::{
-            InvalidUri,
-            Receiver,
-            Sender,
-            Uri,
-            WsTransportClientBuilder,
+            InvalidUri, Receiver, Sender, Uri, WsTransportClientBuilder,
         },
         core::{
-            client::{
-                Client,
-                ClientBuilder,
-            },
+            client::{Client, ClientBuilder},
             Error,
         },
     };
 
-    pub use jsonrpsee::core::{
-        client::ClientT,
-        rpc_params,
-    };
+    pub use jsonrpsee::core::{client::ClientT, rpc_params};
 
     /// Build WS RPC client from URL
     pub async fn build(url: &str) -> Result<Client, Error> {

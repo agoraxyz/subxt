@@ -4,16 +4,9 @@
 
 use super::runtime_types::RuntimeApi;
 
-use crate::{
-    client::OnlineClientT,
-    error::Error,
-    Config,
-};
+use crate::{client::OnlineClientT, error::Error, Config};
 use derivative::Derivative;
-use std::{
-    future::Future,
-    marker::PhantomData,
-};
+use std::{future::Future, marker::PhantomData};
 
 /// Execute runtime API calls.
 #[derive(Derivative)]

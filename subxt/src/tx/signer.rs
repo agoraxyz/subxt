@@ -35,12 +35,8 @@ mod pair_signer {
     use crate::Config;
     use sp_core::Pair as PairT;
     use sp_runtime::{
-        traits::{
-            IdentifyAccount,
-            Verify,
-        },
-        AccountId32 as SpAccountId32,
-        MultiSignature as SpMultiSignature,
+        traits::{IdentifyAccount, Verify},
+        AccountId32 as SpAccountId32, MultiSignature as SpMultiSignature,
     };
 
     /// A [`Signer`] implementation that can be constructed from an [`sp_core::Pair`].

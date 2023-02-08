@@ -3,18 +3,9 @@
 // see LICENSE for license details.
 
 use frame_metadata::{
-    ExtrinsicMetadata,
-    RuntimeMetadataV14,
-    StorageEntryMetadata,
-    StorageEntryType,
+    ExtrinsicMetadata, RuntimeMetadataV14, StorageEntryMetadata, StorageEntryType,
 };
-use scale_info::{
-    form::PortableForm,
-    Field,
-    PortableRegistry,
-    TypeDef,
-    Variant,
-};
+use scale_info::{form::PortableForm, Field, PortableRegistry, TypeDef, Variant};
 use std::collections::HashSet;
 
 /// Internal byte representation for various metadata types utilized for
@@ -176,7 +167,7 @@ fn get_type_hash(
 ) -> [u8; 32] {
     // Guard against recursive types and return a fixed arbitrary hash
     if !visited_ids.insert(id) {
-        return hash(&[123u8])
+        return hash(&[123u8]);
     }
 
     let ty = registry.resolve(id).unwrap();
@@ -459,21 +450,11 @@ pub enum NotFound {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use bitvec::{
-        order::Lsb0,
-        vec::BitVec,
-    };
+    use bitvec::{order::Lsb0, vec::BitVec};
     use frame_metadata::{
-        ExtrinsicMetadata,
-        PalletCallMetadata,
-        PalletConstantMetadata,
-        PalletErrorMetadata,
-        PalletEventMetadata,
-        PalletMetadata,
-        PalletStorageMetadata,
-        RuntimeMetadataV14,
-        StorageEntryMetadata,
-        StorageEntryModifier,
+        ExtrinsicMetadata, PalletCallMetadata, PalletConstantMetadata,
+        PalletErrorMetadata, PalletEventMetadata, PalletMetadata, PalletStorageMetadata,
+        RuntimeMetadataV14, StorageEntryMetadata, StorageEntryModifier,
     };
     use scale_info::meta_type;
 

@@ -41,25 +41,11 @@
 
 use super::{
     rpc_params,
-    types::{
-        self,
-        ChainHeadEvent,
-        FollowEvent,
-    },
-    RpcClient,
-    RpcClientT,
-    Subscription,
+    types::{self, ChainHeadEvent, FollowEvent},
+    RpcClient, RpcClientT, Subscription,
 };
-use crate::{
-    error::Error,
-    utils::PhantomDataSendSync,
-    Config,
-    Metadata,
-};
-use codec::{
-    Decode,
-    Encode,
-};
+use crate::{error::Error, utils::PhantomDataSendSync, Config, Metadata};
+use codec::{Decode, Encode};
 use frame_metadata::RuntimeMetadataPrefixed;
 use serde::Serialize;
 use std::sync::Arc;

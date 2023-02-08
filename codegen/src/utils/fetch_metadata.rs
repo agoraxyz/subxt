@@ -1,19 +1,19 @@
 use jsonrpsee::{
-    core::{
-        client::ClientT,
-        Error,
-    },
+    async_client::ClientBuilder,
+    client_transport::ws::{Uri, WsTransportClientBuilder},
+    core::{client::ClientT, Error},
+    http_client::HttpClientBuilder,
     rpc_params,
 };
 use std::time::Duration;
 
 /// Returns the metadata bytes from the provided URL, blocking the current thread.
-pub fn fetch_metadata_bytes_blocking(url: &str) -> Result<Vec<u8>, FetchMetadataError> {
+pub fn fetch_metadata_bytes_blocking(url: &Uri) -> Result<Vec<u8>, FetchMetadataError> {
     tokio_block_on(fetch_metadata_bytes(url))
 }
 
 /// Returns the raw, 0x prefixed metadata hex from the provided URL, blocking the current thread.
-pub fn fetch_metadata_hex_blocking(url: &str) -> Result<String, FetchMetadataError> {
+pub fn fetch_metadata_hex_blocking(url: &Uri) -> Result<String, FetchMetadataError> {
     tokio_block_on(fetch_metadata_hex(url))
 }
 
@@ -27,14 +27,14 @@ fn tokio_block_on<T, Fut: std::future::Future<Output = T>>(fut: Fut) -> T {
 }
 
 /// Returns the metadata bytes from the provided URL.
-pub async fn fetch_metadata_bytes(url: &str) -> Result<Vec<u8>, FetchMetadataError> {
+pub async fn fetch_metadata_bytes(url: &Uri) -> Result<Vec<u8>, FetchMetadataError> {
     let hex = fetch_metadata_hex(url).await?;
     let bytes = hex::decode(hex.trim_start_matches("0x"))?;
     Ok(bytes)
 }
 
 /// Returns the raw, 0x prefixed metadata hex from the provided URL.
-pub async fn fetch_metadata_hex(url: &str) -> Result<String, FetchMetadataError> {
+pub async fn fetch_metadata_hex(url: &Uri) -> Result<String, FetchMetadataError> {
     let hex_data = match url.scheme_str() {
         Some("http") | Some("https") => fetch_metadata_http(url).await,
         Some("ws") | Some("wss") => fetch_metadata_ws(url).await,
@@ -46,7 +46,7 @@ pub async fn fetch_metadata_hex(url: &str) -> Result<String, FetchMetadataError>
     Ok(hex_data)
 }
 
-async fn fetch_metadata_ws(url: &str) -> Result<String, FetchMetadataError> {
+async fn fetch_metadata_ws(url: &Uri) -> Result<String, FetchMetadataError> {
     let (sender, receiver) = WsTransportClientBuilder::default()
         .build(url.to_string().parse::<Uri>().unwrap())
         .await
@@ -60,7 +60,7 @@ async fn fetch_metadata_ws(url: &str) -> Result<String, FetchMetadataError> {
     Ok(client.request("state_getMetadata", rpc_params![]).await?)
 }
 
-async fn fetch_metadata_http(url: &str) -> Result<String, FetchMetadataError> {
+async fn fetch_metadata_http(url: &Uri) -> Result<String, FetchMetadataError> {
     let client = HttpClientBuilder::default()
         .request_timeout(Duration::from_secs(180))
         .build(url.to_string())?;
@@ -102,67 +102,5 @@ impl From<hex::FromHexError> for FetchMetadataError {
 impl From<jsonrpsee::core::Error> for FetchMetadataError {
     fn from(e: jsonrpsee::core::Error) -> Self {
         FetchMetadataError::RequestError(e)
-    }
-}
-
-// helpers for a jsonrpsee specific OnlineClient.
-#[cfg(feature = "jsonrpsee-ws")]
-mod jsonrpsee_helpers {
-    pub use jsonrpsee::{
-        client_transport::ws::{
-            InvalidUri,
-            Receiver,
-            Sender,
-            Uri,
-            WsTransportClientBuilder,
-        },
-        core::{
-            client::{
-                Client,
-                ClientBuilder,
-            },
-            Error,
-        },
-    };
-
-    /// Build WS RPC client from URL
-    pub async fn client(url: &str) -> Result<Client, Error> {
-        let (sender, receiver) = ws_transport(url).await?;
-        Ok(ClientBuilder::default()
-            .max_notifs_per_subscription(4096)
-            .build_with_tokio(sender, receiver))
-    }
-
-    async fn ws_transport(url: &str) -> Result<(Sender, Receiver), Error> {
-        let url: Uri = url
-            .parse()
-            .map_err(|e: InvalidUri| Error::Transport(e.into()))?;
-        WsTransportClientBuilder::default()
-            .build(url)
-            .await
-            .map_err(|e| Error::Transport(e.into()))
-    }
-}
-
-// helpers for a jsonrpsee specific OnlineClient.
-#[cfg(all(feature = "jsonrpsee-web", target_arch = "wasm32"))]
-mod jsonrpsee_helpers {
-    pub use jsonrpsee::{
-        client_transport::web,
-        core::{
-            client::{
-                Client,
-                ClientBuilder,
-            },
-            Error,
-        },
-    };
-
-    /// Build web RPC client from URL
-    pub async fn client(url: &str) -> Result<Client, Error> {
-        let (sender, receiver) = web::connect(url).await.unwrap();
-        Ok(ClientBuilder::default()
-            .max_notifs_per_subscription(4096)
-            .build_with_wasm(sender, receiver))
     }
 }

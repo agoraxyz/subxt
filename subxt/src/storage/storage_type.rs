@@ -2,33 +2,18 @@
 // This file is dual-licensed as Apache-2.0 or GPL-3.0.
 // see LICENSE for license details.
 
-use super::storage_address::{
-    StorageAddress,
-    Yes,
-};
+use super::storage_address::{StorageAddress, Yes};
 use crate::{
-    client::{
-        OfflineClientT,
-        OnlineClientT,
-    },
+    client::{OfflineClientT, OnlineClientT},
     error::Error,
-    metadata::{
-        DecodeWithMetadata,
-        Metadata,
-    },
-    rpc::types::{
-        StorageData,
-        StorageKey,
-    },
+    metadata::{DecodeWithMetadata, Metadata},
+    rpc::types::{StorageData, StorageKey},
     Config,
 };
 use derivative::Derivative;
 use frame_metadata::StorageEntryType;
 use scale_info::form::PortableForm;
-use std::{
-    future::Future,
-    marker::PhantomData,
-};
+use std::{future::Future, marker::PhantomData};
 
 /// Query the runtime storage.
 #[derive(Derivative)]
@@ -313,7 +298,7 @@ where
                     self.return_type_id,
                     &self.metadata,
                 )?;
-                return Ok(Some((k, val)))
+                return Ok(Some((k, val)));
             } else {
                 let start_key = self.start_key.take();
                 let keys = self
@@ -326,7 +311,7 @@ where
                     .await?;
 
                 if keys.is_empty() {
-                    return Ok(None)
+                    return Ok(None);
                 }
 
                 self.start_key = keys.last().cloned();
@@ -374,13 +359,11 @@ fn validate_storage(
     };
     match expected_hash == hash {
         true => Ok(()),
-        false => {
-            Err(crate::error::MetadataError::IncompatibleStorageMetadata(
-                pallet_name.into(),
-                storage_name.into(),
-            )
-            .into())
-        }
+        false => Err(crate::error::MetadataError::IncompatibleStorageMetadata(
+            pallet_name.into(),
+            storage_name.into(),
+        )
+        .into()),
     }
 }
 

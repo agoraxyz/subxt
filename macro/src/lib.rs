@@ -91,21 +91,9 @@ use std::str::FromStr;
 
 use darling::FromMeta;
 use proc_macro::TokenStream;
-use proc_macro_error::{
-    abort,
-    abort_call_site,
-    proc_macro_error,
-};
-use subxt_codegen::{
-    utils::Uri,
-    DerivesRegistry,
-    TypeSubstitutes,
-};
-use syn::{
-    parse_macro_input,
-    punctuated::Punctuated,
-    spanned::Spanned as _,
-};
+use proc_macro_error::{abort, abort_call_site, proc_macro_error};
+use subxt_codegen::{utils::Uri, DerivesRegistry, TypeSubstitutes};
+use syn::{parse_macro_input, punctuated::Punctuated, spanned::Spanned as _};
 
 #[derive(Debug, FromMeta)]
 struct RuntimeMetadataArgs {

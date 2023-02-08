@@ -3,11 +3,7 @@
 // see LICENSE for license details.
 
 use crate::utils::{
-    dispatch_error::{
-        ArrayDispatchError,
-        LegacyDispatchError,
-        NamedFieldDispatchError,
-    },
+    dispatch_error::{ArrayDispatchError, LegacyDispatchError, NamedFieldDispatchError},
     generate_metadata_from_pallets_custom_dispatch_error,
 };
 use frame_metadata::RuntimeMetadataPrefixed;

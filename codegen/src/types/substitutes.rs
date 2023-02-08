@@ -4,14 +4,8 @@
 
 use crate::CratePath;
 use proc_macro_error::abort;
-use std::{
-    borrow::Cow,
-    collections::HashMap,
-};
-use syn::{
-    parse_quote,
-    spanned::Spanned as _,
-};
+use std::{borrow::Cow, collections::HashMap};
+use syn::{parse_quote, spanned::Spanned as _};
 
 use super::TypePath;
 
@@ -161,15 +155,13 @@ impl TypeSubstitutes {
             mapping: &TypeParamMapping,
         ) -> Cow<'a, [TypePath]> {
             match mapping {
-                TypeParamMapping::Specified(mapping) => {
-                    Cow::Owned(
-                        mapping
-                            .iter()
-                            .filter_map(|&idx| params.get(idx as usize))
-                            .cloned()
-                            .collect(),
-                    )
-                }
+                TypeParamMapping::Specified(mapping) => Cow::Owned(
+                    mapping
+                        .iter()
+                        .filter_map(|&idx| params.get(idx as usize))
+                        .cloned()
+                        .collect(),
+                ),
                 _ => Cow::Borrowed(params),
             }
         }
@@ -219,13 +211,9 @@ fn type_args(path_args: &syn::PathArguments) -> impl Iterator<Item = &syn::Path>
         _ => None,
     };
 
-    args_opt.into_iter().flatten().filter_map(|arg| {
-        match arg {
-            syn::GenericArgument::Type(syn::Type::Path(type_path)) => {
-                Some(&type_path.path)
-            }
-            _ => None,
-        }
+    args_opt.into_iter().flatten().filter_map(|arg| match arg {
+        syn::GenericArgument::Type(syn::Type::Path(type_path)) => Some(&type_path.path),
+        _ => None,
     })
 }
 

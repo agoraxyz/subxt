@@ -10,11 +10,7 @@
 //! polkadot --dev --tmp
 //! ```
 
-use subxt::{
-    config::Header,
-    OnlineClient,
-    PolkadotConfig,
-};
+use subxt::{config::Header, OnlineClient, PolkadotConfig};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {

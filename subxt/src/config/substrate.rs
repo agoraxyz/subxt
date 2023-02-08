@@ -5,32 +5,16 @@
 //! Substrate specific configuration
 
 use super::{
-    extrinsic_params::{
-        BaseExtrinsicParams,
-        BaseExtrinsicParamsBuilder,
-    },
-    Config,
-    Hasher,
-    Header,
+    extrinsic_params::{BaseExtrinsicParams, BaseExtrinsicParamsBuilder},
+    Config, Hasher, Header,
 };
-use codec::{
-    Decode,
-    Encode,
-};
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use codec::{Decode, Encode};
+use serde::{Deserialize, Serialize};
 
 pub use crate::utils::{
-    account_id::AccountId32,
-    multi_address::MultiAddress,
-    multi_signature::MultiSignature,
+    account_id::AccountId32, multi_address::MultiAddress, multi_signature::MultiSignature,
 };
-pub use primitive_types::{
-    H256,
-    U256,
-};
+pub use primitive_types::{H256, U256};
 
 /// Default set of commonly used types by Substrate runtimes.
 // Note: We only use this at the type level, so it should be impossible to

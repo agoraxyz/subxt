@@ -3,30 +3,15 @@
 // see LICENSE for license details.
 
 use crate::{
-    node_runtime::{
-        self,
-        balances,
-        runtime_types,
-        system,
-    },
-    pair_signer,
-    test_context,
+    node_runtime::{self, balances, runtime_types, system},
+    pair_signer, test_context,
 };
 use codec::Decode;
-use sp_core::{
-    sr25519::Pair,
-    Pair as _,
-};
+use sp_core::{sr25519::Pair, Pair as _};
 use sp_keyring::AccountKeyring;
 use subxt::{
-    error::{
-        DispatchError,
-        Error,
-    },
-    utils::{
-        AccountId32,
-        MultiAddress,
-    },
+    error::{DispatchError, Error},
+    utils::{AccountId32, MultiAddress},
 };
 
 #[tokio::test]
@@ -97,11 +82,7 @@ async fn tx_basic_transfer() -> Result<(), subxt::Error> {
 
 #[tokio::test]
 async fn tx_dynamic_transfer() -> Result<(), subxt::Error> {
-    use subxt::ext::scale_value::{
-        At,
-        Composite,
-        Value,
-    };
+    use subxt::ext::scale_value::{At, Composite, Value};
 
     let alice = pair_signer(AccountKeyring::Alice.pair());
     let bob = pair_signer(AccountKeyring::Bob.pair());

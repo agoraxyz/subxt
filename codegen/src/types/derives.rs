@@ -3,16 +3,9 @@
 // see LICENSE for license details.
 
 use crate::CratePath;
-use syn::{
-    parse_quote,
-    punctuated::Punctuated,
-    Path,
-};
+use syn::{parse_quote, punctuated::Punctuated, Path};
 
-use std::collections::{
-    HashMap,
-    HashSet,
-};
+use std::collections::{HashMap, HashSet};
 
 #[derive(Debug, Clone)]
 pub struct DerivesRegistry {

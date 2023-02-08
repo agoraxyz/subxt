@@ -9,25 +9,17 @@ use crate::{
         self,
         contracts::events,
         runtime_types::{
-            pallet_contracts::wasm::Determinism,
-            sp_weights::weight_v2::Weight,
+            pallet_contracts::wasm::Determinism, sp_weights::weight_v2::Weight,
         },
         system,
     },
-    test_context,
-    TestContext,
+    test_context, TestContext,
 };
 use sp_core::sr25519::Pair;
 use subxt::{
-    tx::{
-        PairSigner,
-        TxProgress,
-    },
+    tx::{PairSigner, TxProgress},
     utils::MultiAddress,
-    Config,
-    Error,
-    OnlineClient,
-    SubstrateConfig,
+    Config, Error, OnlineClient, SubstrateConfig,
 };
 
 struct ContractsTestContext {

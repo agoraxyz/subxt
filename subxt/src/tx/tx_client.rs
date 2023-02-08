@@ -4,29 +4,13 @@
 
 use super::TxPayload;
 use crate::{
-    client::{
-        OfflineClientT,
-        OnlineClientT,
-    },
-    config::{
-        Config,
-        ExtrinsicParams,
-        Hasher,
-    },
+    client::{OfflineClientT, OnlineClientT},
+    config::{Config, ExtrinsicParams, Hasher},
     error::Error,
-    tx::{
-        Signer as SignerT,
-        TxProgress,
-    },
-    utils::{
-        Encoded,
-        PhantomDataSendSync,
-    },
+    tx::{Signer as SignerT, TxProgress},
+    utils::{Encoded, PhantomDataSendSync},
 };
-use codec::{
-    Compact,
-    Encode,
-};
+use codec::{Compact, Encode};
 use derivative::Derivative;
 
 // This is returned from an API below, so expose it here.
@@ -68,7 +52,7 @@ impl<T: Config, C: OfflineClientT<T>> TxClient<T, C> {
                     details.pallet_name.into(),
                     details.call_name.into(),
                 )
-                .into())
+                .into());
             }
         }
         Ok(())

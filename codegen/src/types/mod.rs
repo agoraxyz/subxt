@@ -12,42 +12,19 @@ mod type_def_params;
 mod type_path;
 
 use darling::FromMeta;
-use proc_macro2::{
-    Ident,
-    Span,
-    TokenStream,
-};
+use proc_macro2::{Ident, Span, TokenStream};
 use proc_macro_error::abort_call_site;
-use quote::{
-    quote,
-    ToTokens,
-};
-use scale_info::{
-    form::PortableForm,
-    PortableRegistry,
-    Type,
-    TypeDef,
-};
+use quote::{quote, ToTokens};
+use scale_info::{form::PortableForm, PortableRegistry, Type, TypeDef};
 use std::collections::BTreeMap;
 
 pub use self::{
-    composite_def::{
-        CompositeDef,
-        CompositeDefFieldType,
-        CompositeDefFields,
-    },
-    derives::{
-        Derives,
-        DerivesRegistry,
-    },
+    composite_def::{CompositeDef, CompositeDefFieldType, CompositeDefFields},
+    derives::{Derives, DerivesRegistry},
     substitutes::TypeSubstitutes,
     type_def::TypeDefGen,
     type_def_params::TypeDefParameters,
-    type_path::{
-        TypeParameter,
-        TypePath,
-        TypePathType,
-    },
+    type_path::{TypeParameter, TypePath, TypePathType},
 };
 
 pub type Field = scale_info::Field<PortableForm>;
@@ -96,13 +73,13 @@ impl<'a> TypeGenerator<'a> {
             // Don't generate a type if it was substituted - the target type might
             // not be in the type registry + our resolution already performs the substitution.
             if self.type_substitutes.for_path(path).is_some() {
-                continue
+                continue;
             }
 
             let namespace = path.namespace();
             // prelude types e.g. Option/Result have no namespace, so we don't generate them
             if namespace.is_empty() {
-                continue
+                continue;
             }
 
             // Lazily create submodules for the encountered namespace path, if they don't exist
@@ -181,7 +158,7 @@ impl<'a> TypeGenerator<'a> {
             .iter()
             .find(|tp| tp.concrete_type_id == id)
         {
-            return TypePath::Parameter(parent_type_param.clone())
+            return TypePath::Parameter(parent_type_param.clone());
         }
 
         let mut ty = self.resolve_type(id);
@@ -226,71 +203,55 @@ impl<'a> TypeGenerator<'a> {
                     )
                 }
             }
-            TypeDef::Primitive(primitive) => {
-                TypePathType::Primitive {
-                    def: primitive.clone(),
-                }
-            }
-            TypeDef::Array(arr) => {
-                TypePathType::Array {
-                    len: arr.len() as usize,
-                    of: Box::new(self.resolve_type_path_recurse(
-                        arr.type_param().id(),
-                        false,
-                        parent_type_params,
-                    )),
-                }
-            }
-            TypeDef::Sequence(seq) => {
-                TypePathType::Vec {
-                    of: Box::new(self.resolve_type_path_recurse(
-                        seq.type_param().id(),
-                        false,
-                        parent_type_params,
-                    )),
-                }
-            }
-            TypeDef::Tuple(tuple) => {
-                TypePathType::Tuple {
-                    elements: tuple
-                        .fields()
-                        .iter()
-                        .map(|f| {
-                            self.resolve_type_path_recurse(
-                                f.id(),
-                                false,
-                                parent_type_params,
-                            )
-                        })
-                        .collect(),
-                }
-            }
-            TypeDef::Compact(compact) => {
-                TypePathType::Compact {
-                    inner: Box::new(self.resolve_type_path_recurse(
-                        compact.type_param().id(),
-                        false,
-                        parent_type_params,
-                    )),
-                    is_field,
-                    crate_path: self.crate_path.clone(),
-                }
-            }
-            TypeDef::BitSequence(bitseq) => {
-                TypePathType::BitVec {
-                    bit_order_type: Box::new(self.resolve_type_path_recurse(
-                        bitseq.bit_order_type().id(),
-                        false,
-                        parent_type_params,
-                    )),
-                    bit_store_type: Box::new(self.resolve_type_path_recurse(
-                        bitseq.bit_store_type().id(),
-                        false,
-                        parent_type_params,
-                    )),
-                    crate_path: self.crate_path.clone(),
-                }
-            }
+            TypeDef::Primitive(primitive) => TypePathType::Primitive {
+                def: primitive.clone(),
+            },
+            TypeDef::Array(arr) => TypePathType::Array {
+                len: arr.len() as usize,
+                of: Box::new(self.resolve_type_path_recurse(
+                    arr.type_param().id(),
+                    false,
+                    parent_type_params,
+                )),
+            },
+            TypeDef::Sequence(seq) => TypePathType::Vec {
+                of: Box::new(self.resolve_type_path_recurse(
+                    seq.type_param().id(),
+                    false,
+                    parent_type_params,
+                )),
+            },
+            TypeDef::Tuple(tuple) => TypePathType::Tuple {
+                elements: tuple
+                    .fields()
+                    .iter()
+                    .map(|f| {
+                        self.resolve_type_path_recurse(f.id(), false, parent_type_params)
+                    })
+                    .collect(),
+            },
+            TypeDef::Compact(compact) => TypePathType::Compact {
+                inner: Box::new(self.resolve_type_path_recurse(
+                    compact.type_param().id(),
+                    false,
+                    parent_type_params,
+                )),
+                is_field,
+                crate_path: self.crate_path.clone(),
+            },
+            TypeDef::BitSequence(bitseq) => TypePathType::BitVec {
+                bit_order_type: Box::new(self.resolve_type_path_recurse(
+                    bitseq.bit_order_type().id(),
+                    false,
+                    parent_type_params,
+                )),
+                bit_store_type: Box::new(self.resolve_type_path_recurse(
+                    bitseq.bit_store_type().id(),
+                    false,
+                    parent_type_params,
+                )),
+                crate_path: self.crate_path.clone(),
+            },
         };
 
         TypePath::Type(ty)

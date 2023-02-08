@@ -3,26 +3,12 @@
 // see LICENSE for license details.
 
 use super::{
-    CratePath,
-    Derives,
-    Field,
-    TypeDefParameters,
-    TypeGenerator,
-    TypeParameter,
-    TypePath,
+    CratePath, Derives, Field, TypeDefParameters, TypeGenerator, TypeParameter, TypePath,
 };
 use proc_macro2::TokenStream;
 use proc_macro_error::abort_call_site;
-use quote::{
-    format_ident,
-    quote,
-};
-use scale_info::{
-    form::PortableForm,
-    Type,
-    TypeDef,
-    TypeDefPrimitive,
-};
+use quote::{format_ident, quote};
+use scale_info::{form::PortableForm, Type, TypeDef, TypeDefPrimitive};
 
 /// Representation of a type which consists of a set of fields. Used to generate Rust code for
 /// either a standalone `struct` definition, or an `enum` variant.
@@ -185,7 +171,7 @@ impl CompositeDefFields {
         type_gen: &TypeGenerator,
     ) -> Self {
         if fields.is_empty() {
-            return Self::NoFields
+            return Self::NoFields;
         }
 
         let mut named_fields = Vec::new();

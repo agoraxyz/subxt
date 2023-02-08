@@ -10,15 +10,9 @@ mod events_client;
 mod events_type;
 
 pub use events_client::EventsClient;
-pub use events_type::{
-    EventDetails,
-    Events,
-};
+pub use events_type::{EventDetails, Events};
 
-use codec::{
-    Decode,
-    Encode,
-};
+use codec::{Decode, Encode};
 
 /// Trait to uniquely identify the events's identity from the runtime metadata.
 ///

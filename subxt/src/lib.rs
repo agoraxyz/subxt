@@ -137,6 +137,7 @@
 #[cfg(test)]
 use tokio as _;
 
+#[cfg(feature = "macros")]
 pub use subxt_macro::subxt;
 
 // Used to enable the js feature for wasm.
@@ -163,15 +164,8 @@ pub mod utils;
 // Expose a few of the most common types at root,
 // but leave most types behind their respective modules.
 pub use crate::{
-    client::{
-        OfflineClient,
-        OnlineClient,
-    },
-    config::{
-        Config,
-        PolkadotConfig,
-        SubstrateConfig,
-    },
+    client::{OfflineClient, OnlineClient},
+    config::{Config, PolkadotConfig, SubstrateConfig},
     error::Error,
     metadata::Metadata,
 };

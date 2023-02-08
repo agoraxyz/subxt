@@ -2,11 +2,7 @@
 // This file is dual-licensed as Apache-2.0 or GPL-3.0.
 // see LICENSE for license details.
 
-use crate::{
-    dynamic::Value,
-    error::Error,
-    metadata::Metadata,
-};
+use crate::{dynamic::Value, error::Error, metadata::Metadata};
 use codec::Encode;
 
 /// This trait is implemented for types which can be encoded with the help of metadata.

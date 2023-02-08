@@ -6,18 +6,10 @@ pub mod dispatch_error;
 mod metadata_test_runner;
 
 use frame_metadata::{
-    v14::RuntimeMetadataV14,
-    ExtrinsicMetadata,
-    PalletMetadata,
-    PalletStorageMetadata,
-    RuntimeMetadataPrefixed,
-    StorageEntryMetadata,
+    v14::RuntimeMetadataV14, ExtrinsicMetadata, PalletMetadata, PalletStorageMetadata,
+    RuntimeMetadataPrefixed, StorageEntryMetadata,
 };
-use scale_info::{
-    meta_type,
-    IntoPortable,
-    TypeInfo,
-};
+use scale_info::{meta_type, IntoPortable, TypeInfo};
 
 pub use metadata_test_runner::MetadataTestRunner;
 

@@ -5,15 +5,9 @@
 //! Types sent to/from the Substrate RPC interface.
 
 use crate::Config;
-use codec::{
-    Decode,
-    Encode,
-};
+use codec::{Decode, Encode};
 use primitive_types::U256;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 // Subscription types are returned from some calls, so expose it with the rest of the returned types.
@@ -708,16 +702,12 @@ impl<Hash> From<TransactionEvent<Hash>> for TransactionEventIR<Hash> {
             TransactionEvent::Validated => {
                 TransactionEventIR::NonBlock(TransactionEventNonBlockIR::Validated)
             }
-            TransactionEvent::Broadcasted(event) => {
-                TransactionEventIR::NonBlock(TransactionEventNonBlockIR::Broadcasted(
-                    event,
-                ))
-            }
-            TransactionEvent::BestChainBlockIncluded(event) => {
-                TransactionEventIR::Block(
-                    TransactionEventBlockIR::BestChainBlockIncluded(event),
-                )
-            }
+            TransactionEvent::Broadcasted(event) => TransactionEventIR::NonBlock(
+                TransactionEventNonBlockIR::Broadcasted(event),
+            ),
+            TransactionEvent::BestChainBlockIncluded(event) => TransactionEventIR::Block(
+                TransactionEventBlockIR::BestChainBlockIncluded(event),
+            ),
             TransactionEvent::Finalized(event) => {
                 TransactionEventIR::Block(TransactionEventBlockIR::Finalized(event))
             }
@@ -737,33 +727,29 @@ impl<Hash> From<TransactionEvent<Hash>> for TransactionEventIR<Hash> {
 impl<Hash> From<TransactionEventIR<Hash>> for TransactionEvent<Hash> {
     fn from(value: TransactionEventIR<Hash>) -> Self {
         match value {
-            TransactionEventIR::NonBlock(status) => {
-                match status {
-                    TransactionEventNonBlockIR::Validated => TransactionEvent::Validated,
-                    TransactionEventNonBlockIR::Broadcasted(event) => {
-                        TransactionEvent::Broadcasted(event)
-                    }
-                    TransactionEventNonBlockIR::Error(event) => {
-                        TransactionEvent::Error(event)
-                    }
-                    TransactionEventNonBlockIR::Invalid(event) => {
-                        TransactionEvent::Invalid(event)
-                    }
-                    TransactionEventNonBlockIR::Dropped(event) => {
-                        TransactionEvent::Dropped(event)
-                    }
+            TransactionEventIR::NonBlock(status) => match status {
+                TransactionEventNonBlockIR::Validated => TransactionEvent::Validated,
+                TransactionEventNonBlockIR::Broadcasted(event) => {
+                    TransactionEvent::Broadcasted(event)
                 }
-            }
-            TransactionEventIR::Block(block) => {
-                match block {
-                    TransactionEventBlockIR::Finalized(event) => {
-                        TransactionEvent::Finalized(event)
-                    }
-                    TransactionEventBlockIR::BestChainBlockIncluded(event) => {
-                        TransactionEvent::BestChainBlockIncluded(event)
-                    }
+                TransactionEventNonBlockIR::Error(event) => {
+                    TransactionEvent::Error(event)
                 }
-            }
+                TransactionEventNonBlockIR::Invalid(event) => {
+                    TransactionEvent::Invalid(event)
+                }
+                TransactionEventNonBlockIR::Dropped(event) => {
+                    TransactionEvent::Dropped(event)
+                }
+            },
+            TransactionEventIR::Block(block) => match block {
+                TransactionEventBlockIR::Finalized(event) => {
+                    TransactionEvent::Finalized(event)
+                }
+                TransactionEventBlockIR::BestChainBlockIncluded(event) => {
+                    TransactionEvent::BestChainBlockIncluded(event)
+                }
+            },
         }
     }
 }
@@ -915,8 +901,7 @@ mod test {
     #[test]
     fn storage_types_are_substrate_compatible() {
         use sp_core::storage::{
-            StorageChangeSet as SpStorageChangeSet,
-            StorageData as SpStorageData,
+            StorageChangeSet as SpStorageChangeSet, StorageData as SpStorageData,
             StorageKey as SpStorageKey,
         };
 

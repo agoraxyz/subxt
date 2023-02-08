@@ -7,18 +7,11 @@
 
 use crate::{
     dynamic::Value,
-    error::{
-        Error,
-        MetadataError,
-    },
+    error::{Error, MetadataError},
     metadata::Metadata,
 };
 use codec::Encode;
-use scale_value::{
-    Composite,
-    ValueDef,
-    Variant,
-};
+use scale_value::{Composite, ValueDef, Variant};
 use std::borrow::Cow;
 
 /// This represents a transaction payload that can be submitted
@@ -112,12 +105,10 @@ impl<CallData: Encode> TxPayload for StaticTxPayload<CallData> {
     }
 
     fn validation_details(&self) -> Option<ValidationDetails<'_>> {
-        self.validation_hash.map(|hash| {
-            ValidationDetails {
-                pallet_name: self.pallet_name,
-                call_name: self.call_name,
-                hash,
-            }
+        self.validation_hash.map(|hash| ValidationDetails {
+            pallet_name: self.pallet_name,
+            call_name: self.call_name,
+            hash,
         })
     }
 }

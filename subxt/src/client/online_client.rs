@@ -2,33 +2,22 @@
 // This file is dual-licensed as Apache-2.0 or GPL-3.0.
 // see LICENSE for license details.
 
-use super::{
-    OfflineClient,
-    OfflineClientT,
-};
+use super::{OfflineClient, OfflineClientT};
 use crate::{
     blocks::BlocksClient,
     constants::ConstantsClient,
     error::Error,
     events::EventsClient,
     rpc::{
-        types::{
-            RuntimeVersion,
-            Subscription,
-        },
-        Rpc,
-        RpcClientT,
+        types::{RuntimeVersion, Subscription},
+        Rpc, RpcClientT,
     },
     runtime_api::RuntimeApiClient,
     storage::StorageClient,
     tx::TxClient,
-    Config,
-    Metadata,
+    Config, Metadata,
 };
-use codec::{
-    Compact,
-    Decode,
-};
+use codec::{Compact, Decode};
 use derivative::Derivative;
 use frame_metadata::RuntimeMetadataPrefixed;
 use futures::future;
@@ -341,7 +330,7 @@ impl<T: Config> ClientRuntimeUpdater<T> {
     /// Tries to apply a new update.
     pub fn apply_update(&self, update: Update) -> Result<(), UpgradeError> {
         if !self.is_runtime_version_different(&update.runtime_version) {
-            return Err(UpgradeError::SameVersion)
+            return Err(UpgradeError::SameVersion);
         }
 
         self.do_update(update);
@@ -443,17 +432,10 @@ impl Update {
 mod jsonrpsee_helpers {
     pub use jsonrpsee::{
         client_transport::ws::{
-            InvalidUri,
-            Receiver,
-            Sender,
-            Uri,
-            WsTransportClientBuilder,
+            InvalidUri, Receiver, Sender, Uri, WsTransportClientBuilder,
         },
         core::{
-            client::{
-                Client,
-                ClientBuilder,
-            },
+            client::{Client, ClientBuilder},
             Error,
         },
     };
@@ -483,10 +465,7 @@ mod jsonrpsee_helpers {
     pub use jsonrpsee::{
         client_transport::web,
         core::{
-            client::{
-                Client,
-                ClientBuilder,
-            },
+            client::{Client, ClientBuilder},
             Error,
         },
     };

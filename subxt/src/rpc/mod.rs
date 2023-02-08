@@ -66,17 +66,8 @@ pub mod types;
 pub use rpc::*;
 
 pub use rpc_client_t::{
-    RawValue,
-    RpcClientT,
-    RpcFuture,
-    RpcSubscription,
-    RpcSubscriptionId,
+    RawValue, RpcClientT, RpcFuture, RpcSubscription, RpcSubscriptionId,
     RpcSubscriptionStream,
 };
 
-pub use rpc_client::{
-    rpc_params,
-    RpcClient,
-    RpcParams,
-    Subscription,
-};
+pub use rpc_client::{rpc_params, RpcClient, RpcParams, Subscription};

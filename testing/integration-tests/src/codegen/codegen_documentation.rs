@@ -3,12 +3,7 @@
 // see LICENSE for license details.
 
 use regex::Regex;
-use subxt_codegen::{
-    CratePath,
-    DerivesRegistry,
-    RuntimeGenerator,
-    TypeSubstitutes,
-};
+use subxt_codegen::{CratePath, DerivesRegistry, RuntimeGenerator, TypeSubstitutes};
 
 fn load_test_metadata() -> frame_metadata::RuntimeMetadataPrefixed {
     let bytes = test_runtime::METADATA;

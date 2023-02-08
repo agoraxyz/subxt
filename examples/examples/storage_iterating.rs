@@ -12,12 +12,8 @@
 
 use codec::Decode;
 use subxt::{
-    storage::address::{
-        StorageHasher,
-        StorageMapKey,
-    },
-    OnlineClient,
-    PolkadotConfig,
+    storage::address::{StorageHasher, StorageMapKey},
+    OnlineClient, PolkadotConfig,
 };
 
 #[subxt::subxt(runtime_metadata_path = "../artifacts/polkadot_metadata.scale")]

@@ -3,24 +3,12 @@
 // see LICENSE for license details.
 
 use super::{
-    CompositeDef,
-    CompositeDefFields,
-    CratePath,
-    Derives,
-    TypeDefParameters,
-    TypeGenerator,
-    TypeParameter,
+    CompositeDef, CompositeDefFields, CratePath, Derives, TypeDefParameters,
+    TypeGenerator, TypeParameter,
 };
 use proc_macro2::TokenStream;
-use quote::{
-    format_ident,
-    quote,
-};
-use scale_info::{
-    form::PortableForm,
-    Type,
-    TypeDef,
-};
+use quote::{format_ident, quote};
+use scale_info::{form::PortableForm, Type, TypeDef};
 use syn::parse_quote;
 
 /// Generates a Rust `struct` or `enum` definition based on the supplied [`scale-info::Type`].
@@ -52,18 +40,16 @@ impl TypeDefGen {
             .type_params()
             .iter()
             .enumerate()
-            .filter_map(|(i, tp)| {
-                match tp.ty() {
-                    Some(ty) => {
-                        let tp_name = format_ident!("_{}", i);
-                        Some(TypeParameter {
-                            concrete_type_id: ty.id(),
-                            original_name: tp.name().clone(),
-                            name: tp_name,
-                        })
-                    }
-                    None => None,
+            .filter_map(|(i, tp)| match tp.ty() {
+                Some(ty) => {
+                    let tp_name = format_ident!("_{}", i);
+                    Some(TypeParameter {
+                        concrete_type_id: ty.id(),
+                        original_name: tp.name().clone(),
+                        name: tp_name,
+                    })
                 }
+                None => None,
             })
             .collect::<Vec<_>>();
 

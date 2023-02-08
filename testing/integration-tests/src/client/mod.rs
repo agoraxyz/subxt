@@ -3,35 +3,18 @@
 // see LICENSE for license details.
 
 use crate::{
-    pair_signer,
-    test_context,
-    test_context_with,
-    utils::{
-        node_runtime,
-        wait_for_blocks,
-    },
+    pair_signer, test_context, test_context_with,
+    utils::{node_runtime, wait_for_blocks},
 };
 use assert_matches::assert_matches;
-use codec::{
-    Compact,
-    Decode,
-    Encode,
-};
+use codec::{Compact, Decode, Encode};
 use frame_metadata::RuntimeMetadataPrefixed;
-use sp_core::{
-    sr25519::Pair as Sr25519Pair,
-    storage::well_known_keys,
-    Pair,
-};
+use sp_core::{sr25519::Pair as Sr25519Pair, storage::well_known_keys, Pair};
 use sp_keyring::AccountKeyring;
 use subxt::{
     error::DispatchError,
     rpc::types::{
-        ChainHeadEvent,
-        DryRunError,
-        FollowEvent,
-        Initialized,
-        RuntimeEvent,
+        ChainHeadEvent, DryRunError, FollowEvent, Initialized, RuntimeEvent,
         RuntimeVersionEvent,
     },
     utils::AccountId32,

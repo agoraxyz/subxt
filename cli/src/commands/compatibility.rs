@@ -3,27 +3,15 @@
 // see LICENSE for license details.
 
 use clap::Parser as ClapParser;
-use color_eyre::eyre::{
-    self,
-    WrapErr,
-};
+use color_eyre::eyre::{self, WrapErr};
 use frame_metadata::{
-    RuntimeMetadata,
-    RuntimeMetadataPrefixed,
-    RuntimeMetadataV14,
-    META_RESERVED,
+    RuntimeMetadata, RuntimeMetadataPrefixed, RuntimeMetadataV14, META_RESERVED,
 };
 use jsonrpsee::client_transport::ws::Uri;
 use scale::Decode;
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use subxt_metadata::{
-    get_metadata_hash,
-    get_pallet_hash,
-};
+use subxt_metadata::{get_metadata_hash, get_pallet_hash};
 
 /// Verify metadata compatibility between substrate nodes.
 #[derive(Debug, ClapParser)]
@@ -120,17 +108,15 @@ async fn fetch_runtime_metadata(url: &Uri) -> color_eyre::Result<RuntimeMetadata
             url,
             metadata.0,
             META_RESERVED
-        ))
+        ));
     }
 
     match metadata.1 {
         RuntimeMetadata::V14(v14) => Ok(v14),
-        _ => {
-            Err(eyre::eyre!(
-                "Node {:?} with unsupported metadata version: {:?}",
-                url,
-                metadata.1
-            ))
-        }
+        _ => Err(eyre::eyre!(
+            "Node {:?} with unsupported metadata version: {:?}",
+            url,
+            metadata.1
+        )),
     }
 }

@@ -3,26 +3,17 @@
 // see LICENSE for license details.
 
 use super::{
-    storage_type::{
-        validate_storage_address,
-        Storage,
-    },
+    storage_type::{validate_storage_address, Storage},
     StorageAddress,
 };
 
 use crate::{
-    client::{
-        OfflineClientT,
-        OnlineClientT,
-    },
+    client::{OfflineClientT, OnlineClientT},
     error::Error,
     Config,
 };
 use derivative::Derivative;
-use std::{
-    future::Future,
-    marker::PhantomData,
-};
+use std::{future::Future, marker::PhantomData};
 
 /// Query the runtime storage.
 #[derive(Derivative)]
@@ -77,13 +68,11 @@ where
             // for the latest block and use that.
             let block_hash = match block_hash {
                 Some(hash) => hash,
-                None => {
-                    client
-                        .rpc()
-                        .block_hash(None)
-                        .await?
-                        .expect("didn't pass a block number; qed")
-                }
+                None => client
+                    .rpc()
+                    .block_hash(None)
+                    .await?
+                    .expect("didn't pass a block number; qed"),
             };
 
             Ok(Storage::new(client, block_hash))

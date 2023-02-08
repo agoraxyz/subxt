@@ -12,15 +12,9 @@ pub mod extrinsic_params;
 pub mod polkadot;
 pub mod substrate;
 
-use codec::{
-    Decode,
-    Encode,
-};
+use codec::{Decode, Encode};
 use core::fmt::Debug;
-use serde::{
-    de::DeserializeOwned,
-    Serialize,
-};
+use serde::{de::DeserializeOwned, Serialize};
 
 pub use extrinsic_params::ExtrinsicParams;
 pub use polkadot::PolkadotConfig;

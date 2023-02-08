@@ -3,19 +3,9 @@
 // see LICENSE for license details.
 
 use crate::{
-    client::{
-        OfflineClientT,
-        OnlineClientT,
-    },
-    config::{
-        Config,
-        Hasher,
-        Header,
-    },
-    error::{
-        BlockError,
-        Error,
-    },
+    client::{OfflineClientT, OnlineClientT},
+    config::{Config, Hasher, Header},
+    error::{BlockError, Error},
     events,
     rpc::types::ChainBlockResponse,
     runtime_api::RuntimeApi,
@@ -135,15 +125,13 @@ where
             .extrinsics
             .iter()
             .enumerate()
-            .map(|(idx, e)| {
-                Extrinsic {
-                    index: idx as u32,
-                    bytes: &e.0,
-                    client: self.client.clone(),
-                    block_hash: self.details.block.header.hash(),
-                    cached_events: self.cached_events.clone(),
-                    _marker: std::marker::PhantomData,
-                }
+            .map(|(idx, e)| Extrinsic {
+                index: idx as u32,
+                bytes: &e.0,
+                client: self.client.clone(),
+                block_hash: self.details.block.header.hash(),
+                cached_events: self.cached_events.clone(),
+                _marker: std::marker::PhantomData,
             })
     }
 }
