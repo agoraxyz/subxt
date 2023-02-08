@@ -47,13 +47,14 @@ mod api;
 mod ir;
 mod types;
 
+#[cfg(feature = "fetch-metadata")]
 pub mod utils;
 
+#[cfg(feature = "fetch-metadata")]
+pub use self::api::{generate_runtime_api_from_url, RuntimeGenerator};
+
 pub use self::{
-    api::{
-        generate_runtime_api_from_bytes, generate_runtime_api_from_path,
-        generate_runtime_api_from_url, RuntimeGenerator,
-    },
+    api::{generate_runtime_api_from_bytes, generate_runtime_api_from_path},
     types::{
         CratePath, Derives, DerivesRegistry, Module, TypeGenerator, TypeSubstitutes,
     },

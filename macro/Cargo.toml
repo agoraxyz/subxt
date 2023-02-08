@@ -12,6 +12,10 @@ documentation = "https://docs.rs/subxt"
 homepage = "https://www.parity.io/"
 description = "Generate types and helpers for interacting with Substrate runtimes."
 
+[features]
+default = ["fetch-metadata"]
+fetch-metadata = ["subxt-codegen/fetch-metadata"]
+
 [lib]
 proc-macro = true
 
@@ -20,4 +24,4 @@ darling = "0.14.0"
 proc-macro-error = "1.0.4"
 syn = "1.0.58"
 
-subxt-codegen = { path = "../codegen", version = "0.26.0" }
+subxt-codegen = { path = "../codegen", version = "0.26.0", default-features = false }

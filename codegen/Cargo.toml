@@ -11,6 +11,10 @@ documentation = "https://docs.rs/subxt-codegen"
 homepage = "https://www.parity.io/"
 description = "Generate an API for interacting with a substrate node from FRAME metadata"
 
+[features]
+default = ["fetch-metadata"]
+fetch-metadata = ["jsonrpsee", "hex", "tokio"]
+
 [dependencies]
 codec = { package = "parity-scale-codec", version = "3.0.0", default-features = false, features = ["derive", "full"] }
 darling = "0.14.0"
@@ -22,9 +26,9 @@ quote = "1.0.8"
 syn = "1.0.58"
 scale-info = "2.0.0"
 subxt-metadata = { version = "0.26.0", path = "../metadata" }
-jsonrpsee = { version = "0.16.0", features = ["async-client", "client-ws-transport", "http-client"] }
-hex = "0.4.3"
-tokio = { version = "1.25", features = ["macros", "rt-multi-thread"] }
+jsonrpsee = { version = "0.16.0", features = ["async-client", "client-ws-transport", "http-client"], optional = true }
+hex = { version = "0.4.3", optional = true }
+tokio = { version = "1.25", features = ["macros", "rt-multi-thread"], optional = true }
 
 [dev-dependencies]
 bitvec = { version = "1.0.0", default-features = false, features = ["alloc"] }

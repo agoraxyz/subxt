@@ -12,10 +12,11 @@ mod storage;
 use subxt_metadata::get_metadata_per_pallet_hash;
 
 use super::DerivesRegistry;
+#[cfg(feature = "fetch-metadata")]
+use crate::utils::{fetch_metadata_bytes_blocking, Uri};
 use crate::{
     ir,
     types::{CompositeDef, CompositeDefFields, TypeGenerator, TypeSubstitutes},
-    utils::{fetch_metadata_bytes_blocking, Uri},
     CratePath,
 };
 use codec::Decode;
@@ -78,6 +79,7 @@ where
 /// * `crate_path` - Path to the `subxt` crate.
 ///
 /// **Note:** This is a wrapper over [RuntimeGenerator] for static metadata use-cases.
+#[cfg(feature = "fetch-metadata")]
 pub fn generate_runtime_api_from_url(
     item_mod: syn::ItemMod,
     url: &Uri,

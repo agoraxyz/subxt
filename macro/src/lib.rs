@@ -87,12 +87,13 @@
 
 extern crate proc_macro;
 
+#[cfg(feature = "fetch-metadata")]
 use std::str::FromStr;
 
 use darling::FromMeta;
 use proc_macro::TokenStream;
 use proc_macro_error::{abort, abort_call_site, proc_macro_error};
-use subxt_codegen::{utils::Uri, DerivesRegistry, TypeSubstitutes};
+use subxt_codegen::{DerivesRegistry, TypeSubstitutes};
 use syn::{parse_macro_input, punctuated::Punctuated, spanned::Spanned as _};
 
 #[derive(Debug, FromMeta)]
@@ -179,10 +180,15 @@ pub fn subxt(args: TokenStream, input: TokenStream) -> TokenStream {
             )
             .into()
         }
+        #[cfg(feature = "fetch-metadata")]
         (None, Some(url_string)) => {
-            let url = Uri::from_str(&url_string).unwrap_or_else(|_| {
-                abort_call_site!("Cannot download metadata; invalid url: {}", url_string)
-            });
+            let url =
+                subxt_codegen::utils::Uri::from_str(&url_string).unwrap_or_else(|_| {
+                    abort_call_site!(
+                        "Cannot download metadata; invalid url: {}",
+                        url_string
+                    )
+                });
             subxt_codegen::generate_runtime_api_from_url(
                 item_mod,
                 &url,
@@ -192,6 +198,8 @@ pub fn subxt(args: TokenStream, input: TokenStream) -> TokenStream {
             )
             .into()
         }
+        #[cfg(not(feature = "fetch-metadata"))]
+        (None, Some(_)) => unimplemented!(),
         (None, None) => {
             abort_call_site!("One of 'runtime_metadata_path' or 'runtime_metadata_url' must be provided")
         }
