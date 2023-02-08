@@ -13,12 +13,14 @@ description = "Submit extrinsics (transactions) to a substrate node via RPC"
 keywords = ["parity", "substrate", "blockchain"]
 
 [features]
-default = ["jsonrpsee-ws"]
+default = ["jsonrpsee-ws", "signing"]
 
 # Activate this to expose functionality only used for integration testing.
 # The exposed functionality is subject to breaking changes at any point,
 # and should not be relied upon.
 integration-tests = []
+
+signing = ["sp-core", "sp-runtime"]
 
 # Jsonrpsee if the default RPC provider used in Subxt. However, it can be
 # swapped out for an alternative implementation, and so is optional.
@@ -43,8 +45,8 @@ parking_lot = "0.12.0"
 subxt-macro = { version = "0.24.0", path = "../macro" }
 subxt-metadata = { version = "0.24.0", path = "../metadata" }
 
-sp-core = { version = "15.0.0", default-features = false }
-sp-runtime = { version = "17.0.0" }
+sp-core = { version = "15.0.0", default-features = false, optional = true }
+sp-runtime = { version = "17.0.0", optional = true }
 
 frame-metadata = "15.0.0"
 derivative = "2.2.0"
