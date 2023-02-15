@@ -84,6 +84,16 @@ impl<T: Config> Rpc<T> {
     }
 
     /// Fetch the raw bytes for a given storage key
+    pub async fn offchain(
+        &self,
+        key: &[u8],
+    ) -> Result<Option<types::StorageData>, Error> {
+        let params = rpc_params!["PERSISTENT", to_hex(key)];
+        let data = self.client.request("offchain_localStorageGet", params).await?;
+        Ok(data)
+    }
+
+    /// Fetch the raw bytes for a given storage key
     pub async fn storage(
         &self,
         key: &[u8],
