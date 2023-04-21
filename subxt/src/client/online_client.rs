@@ -444,6 +444,7 @@ mod jsonrpsee_helpers {
     pub async fn client(url: &str) -> Result<Client, Error> {
         let (sender, receiver) = ws_transport(url).await?;
         Ok(ClientBuilder::default()
+            .max_concurrent_requests(16384)
             .max_notifs_per_subscription(4096)
             .build_with_tokio(sender, receiver))
     }
